@@ -1,0 +1,304 @@
+{
+    "eventTypes": [
+        {
+            "id": "1",
+            "typeName": "Meeting"
+        },
+        {
+            "id": "2",
+            "typeName": "Event"
+        },
+        {
+            "id": "3",
+            "typeName": "Schedule"
+        },
+        {
+            "id": "4",
+            "typeName": "Training"
+        },
+        {
+            "id": "5",
+            "typeName": "Training"
+        }
+    ],
+    "events": [
+        {
+            "id": "3",
+            "eventName": "Data Science Lecture",
+            "eventDescription": "Lecture on Data Science",
+            "date": "2024-06-22",
+            "timeStart": "09:00",
+            "timeEnd": "11:00",
+            "eventLocation": "Room C",
+            "eventType": "4"
+        },
+        {
+            "id": "4",
+            "eventName": "Tech Conference",
+            "eventDescription": "Annual tech conference",
+            "date": "2024-06-22",
+            "timeStart": "13:00",
+            "timeEnd": "17:00",
+            "eventLocation": "Main Hall",
+            "eventType": "1"
+        },
+        {
+            "id": "5",
+            "eventName": "Online Marketing Webinar",
+            "eventDescription": "Webinar on online marketing",
+            "date": "2024-06-23",
+            "timeStart": "15:00",
+            "timeEnd": "17:00",
+            "eventLocation": "Online",
+            "eventType": "3"
+        },
+        {
+            "id": "6",
+            "eventName": "Employee Training",
+            "eventDescription": "Training for new employees",
+            "date": "2024-06-24",
+            "timeStart": "08:00",
+            "timeEnd": "12:00",
+            "eventLocation": "Training Room",
+            "eventType": "2"
+        }
+    ],
+    "notifications": [
+        {
+            "id": "1",
+            "eventID": "3",
+            "NotiMessage": "Event starts in one hour",
+            "timeSent": "2024-06-19T09:00:00Z"
+        },
+        {
+            "id": "2",
+            "eventID": "4",
+            "NotiMessage": "Event starts in one hour",
+            "timeSent": "2024-06-20T13:00:00Z"
+        },
+        {
+            "id": "3",
+            "eventID": "5",
+            "NotiMessage": "Event starts in one hour",
+            "timeSent": "2024-06-21T08:00:00Z"
+        },
+        {
+            "id": "4",
+            "eventID": "6",
+            "NotiMessage": "Event starts in one hour",
+            "timeSent": "2024-06-22T12:00:00Z"
+        }
+    ],
+    "attendances": [
+        {
+            "id": "1",
+            "lecturerID": "TC02",
+            "status": "present",
+            "reason": null,
+            "lecturerRole": "1"
+        },
+        {
+            "id": "2",
+            "lecturerID": "TC03",
+            "status": "absent",
+            "reason": "Sick",
+            "lecturerRole": "2"
+        },
+        {
+            "id": "3",
+            "lecturerID": "TC02",
+            "status": "present",
+            "reason": null,
+            "lecturerRole": "1"
+        },
+        {
+            "id": "4",
+            "lecturerID": "TC02",
+            "status": "present",
+            "reason": null,
+            "lecturerRole": "2"
+        },
+        {
+            "id": "5",
+            "lecturerID": "TC02",
+            "status": "absent",
+            "reason": "Personal reasons",
+            "lecturerRole": "1"
+        },
+        {
+            "id": "6",
+            "lecturerID": "TC02",
+            "status": "present",
+            "reason": null,
+            "lecturerRole": "2"
+        }
+    ],
+    "lecturers": [
+        {
+            "id": "AD01",
+            "isAdmin": true,
+            "position": "Hiệu trưởng ",
+            "avatar": "https://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-6/442481238_1164844054832467_1653116092533983815_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGCtKrkEv_EroFrzCbNy-S_WP9gegLcY2dY_2B6AtxjZ_133jrYgA9alJ_ta-3SZeEa-Q4F6YzHZhOYE1XjeVyw&_nc_ohc=AZmyUtuB_xYQ7kNvgGtHmMT&_nc_ht=scontent.fhan14-3.fna&oh=00_AYB0nQeeSiTRwt9GXDzDQOqquPEtyIs5CDDiJhd6kxxGYA&oe=667D60E0",
+            "lecturerName": "Vũ Quốc Duy Đẹp trai",
+            "lecturerPhone": "1234567890",
+            "password": "password123",
+            "email": "vuduy@gmail.com"
+        },
+        {
+            "id": "TC02",
+            "isAdmin": false,
+            "position": "Giáo viên môn Toán",
+            "avatar": "data:image/jpeg;base64,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",
+            "lecturerName": "Jane Smith",
+            "lecturerPhone": "0987654321",
+            "password": "password456",
+            "email": "jane.smith@example.com"
+        },
+        {
+            "id": "TC03",
+            "isAdmin": false,
+            "lecturerName": "Bob Brown",
+            "lecturerPhone": "2233445566",
+            "password": "password101",
+            "email": "bob.brown@example.com"
+        },
+        {
+            "id": "TC05",
+            "isAdmin": false,
+            "lecturerName": "Charlie Davis",
+            "lecturerPhone": "3344556677",
+            "password": "password102",
+            "email": "charlie.davis@example.com"
+        },
+        {
+            "id": "TC627",
+            "isAdmin": false,
+            "position": "bảo vệ",
+            "avatar": "",
+            "lecturerName": "khánh cu",
+            "lecturerPhone": "111111",
+            "password": "123456",
+            "email": "2@gmail.com"
+        },
+        {
+            "id": "TC197",
+            "isAdmin": false,
+            "position": "gà vll",
+            "avatar": "",
+            "lecturerName": "ngu qué",
+            "lecturerPhone": "11345",
+            "password": "duydaptrai",
+            "email": "vllun@gmail.com"
+        },
+        {
+            "id": "TC850",
+            "isAdmin": false,
+            "position": "bếp",
+            "avatar": "",
+            "lecturerName": "hhhhh",
+            "lecturerPhone": "888",
+            "password": "hhss",
+            "email": "a@gmail.com"
+        },
+        {
+            "id": "TC662",
+            "isAdmin": false,
+            "position": "hiệu phó",
+            "avatar": "",
+            "lecturerName": "ngu",
+            "lecturerPhone": "123456678",
+            "password": "aaaaaaa",
+            "email": "duydz@gmail.com"
+        }
+    ],
+    "roles": [
+        {
+            "id": "1",
+            "roleName": "Host"
+        },
+        {
+            "id": "2",
+            "roleName": "Member"
+        }
+    ],
+    "listEventsForAdmin": [
+        {
+            "id": "1170",
+            "eventName": "55555",
+            "eventDescription": "5555",
+            "date": "2024-07-29",
+            "timeStart": "07:00",
+            "timeEnd": "10:00",
+            "eventLocation": "h3",
+            "eventType": "2",
+            "hostName": [
+                {
+                    "id": "AD01",
+                    "name": "Vũ Quốc Duy Đẹp trai"
+                }
+            ],
+            "participants": [
+                {
+                    "id": "TC02",
+                    "name": "Jane Smith"
+                },
+                {
+                    "id": "TC04",
+                    "name": "Bob Brown"
+                },
+                {
+                    "id": "TC05",
+                    "name": "Charlie Davis"
+                },
+                {
+                    "id": "TC627",
+                    "name": "khánh cu"
+                }
+            ]
+        },
+        {
+            "id": "0fbb",
+            "eventName": "1",
+            "eventDescription": "1",
+            "date": "2024-07-29",
+            "timeStart": "10:00",
+            "timeEnd": "12:00",
+            "eventLocation": "ha noi",
+            "eventType": "2",
+            "hostName": [
+                {
+                    "id": "TC02",
+                    "name": "Jane Smith"
+                }
+            ],
+            "participants": [
+                {
+                    "id": "TC627",
+                    "name": "khánh cu"
+                }
+            ]
+        },
+        {
+            "id": "57f7",
+            "eventName": "123",
+            "eventDescription": "123",
+            "date": "2024-07-29",
+            "timeStart": "13:00",
+            "timeEnd": "14:00",
+            "eventLocation": "nha em",
+            "eventType": "3",
+            "hostName": [
+                {
+                    "id": "TC05",
+                    "name": "Charlie Davis"
+                }
+            ],
+            "participants": [
+                {
+                    "id": "TC02",
+                    "name": "Jane Smith"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,37 @@
+// reset css
+@import 'normalize.css';
+//fornt
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,300&display=swap');
+
+:root {
+    --primary-color: #c53337f0;
+    --primary-background-hover: rgb(232, 13, 60);
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 1.6rem;
+    line-height: 1.5;
+    text-rendering: optimizeSpeed;
+    font-family: 'roboto', sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+button,
+input,
+[tabindex] {
+    outline: none;
+    border: none;
+}
+a[href] {
+    text-decoration: none;
+    color: black;
+}
