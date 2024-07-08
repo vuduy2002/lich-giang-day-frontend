@@ -37,24 +37,37 @@ const LecturerForm = ({ children = null, listLecturers, onBack = false }) => {
         }
     }, [children]);
 
-    useEffect(() => {
-        return !children ? resetForm() : console.log(children);
-    }, []);
-
+    // useEffect(() => {
+    //     return !children ? resetForm() : console.log(children);
+    // }, []);
+    console.log(listLecturers);
+    //create id
     const generateId = () => {
         const prefix = formData.isAdmin ? 'TC' : 'AD';
-        const randomNum = Math.floor(100 + Math.random() * 900); // Random 3-digit number
-        const newId = `${prefix}${randomNum}`;
+        let newId = '';
+        let arrId = listLecturers.map((lecturer) => lecturer.lecturerId);
+        do {
+            const randomNum = Math.floor(100 + Math.random() * 900); // Random 3-digit number
+            newId = `${prefix}${randomNum}`;
+        } while (arrId.includes(newId));
 
         // Check for ID uniqueness
-        if (listLecturers.some((lecturer) => lecturer.id === newId)) {
-            setError('ID trùng lặp, vui lòng thử lại!');
-            return '';
-        }
 
-        setError('');
         return newId;
     };
+
+    // if (!children) {
+    //     let newId = '';
+    //     let arrId = events.map((event) => event.eventId);
+    //     do {
+    //         const randomNum = Math.floor(1000 + Math.random() * 9000); // Random 4 number
+    //         newId = `EV${randomNum}`;
+    //     } while (arrId.includes(newId));
+    //     setFormData((prev) => ({
+    //         ...prev,
+    //         eventId: newId,
+    //     }));
+    // }
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -127,7 +140,7 @@ const LecturerForm = ({ children = null, listLecturers, onBack = false }) => {
         });
         inputRef.current.focus();
     };
-
+    // console.log('chidren', children, 'formdata', formData);
     return (
         <div className={cx('container')}>
             <Button

@@ -49,7 +49,7 @@ const ListLecturersAdmin = () => {
             setLecturers(response.data);
         }
     };
-    console.log(lecturers);
+
     return showForm ? (
         <LecturerForm listLecturers={lecturers} onBack={setShowForm}>
             {updateLecturer}
