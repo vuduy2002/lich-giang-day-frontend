@@ -8,19 +8,36 @@
     margin-bottom: 2rem;
     color: #333;
 }
+
+//search
+.box-search{       
+    display: flex;
+    flex-wrap: wrap;
+ 
+}
+
 .inputSearch {
     border: 1px solid #333;
     border-radius: 999px;
     min-width: 5rem;
     height: 3rem;
     padding: 0 1rem;
-    margin-bottom: 1rem;
+    margin: 0 1rem 1rem 0;
     box-shadow: 5px 5px 5px #b2b1b1;
-    margin-bottom: 1rem;
+    
+}
+.date-input {
+    width: 12rem; /* Adjust width as needed */
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
 }
 
 .boxTable {
     width: 100%;
+    margin-top: 1rem;
     overflow-x: scroll;
 }
 
@@ -55,39 +72,6 @@ td {
     text-align: left;
 }
 
-// @media (max-width: 740px) {
-//     .table .thead {
-//         display: none;
-//     }
-
-//     .table,
-//     .table .tbody,
-//     .table tr,
-//     .table td {
-//         display: block;
-//         width: 100%;
-//     }
-
-//     .table tr {
-//         margin-bottom: 15px;
-//     }
-
-//     .table td {
-//         text-align: left;
-//         padding-left: 50%;
-//         position: relative;
-//     }
-
-//     .table td::before {
-//         content: attr(data-label);
-//         position: absolute;
-//         left: 0;
-//         width: 50%;
-//         padding-left: 15px;
-//         font-weight: bold;
-//         text-align: left;
-//     }
-// }
 .icon {
     cursor: pointer;
     margin-right: 10px;

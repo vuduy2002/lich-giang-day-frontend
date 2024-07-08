@@ -13,6 +13,9 @@ const ListEventsAdmin = () => {
     const [checkUpdate, setCheckUpdate] = useState(false);
     const [currentEvent, setCurrentEvent] = useState({});
     const [inputValue, setInputValue] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -57,15 +60,26 @@ const ListEventsAdmin = () => {
                   .join(' ')
             : '';
         const query = inputValue.toLowerCase();
-
+    
+        // Date filtering
+        const eventDate = new Date(event.date);
+        const validStartDate = startDate ? new Date(startDate) : null;
+        const validEndDate = endDate ? new Date(endDate) : null;
+    
+        const isAfterStartDate = !validStartDate || eventDate >= validStartDate;
+        const isBeforeEndDate = !validEndDate || eventDate <= validEndDate;
+    
         return (
-            name.includes(query) ||
+            (name.includes(query) ||
             description.includes(query) ||
             location.includes(query) ||
             host.includes(query) ||
-            participants.includes(query)
+            participants.includes(query)) &&
+            isAfterStartDate &&
+            isBeforeEndDate
         );
     });
+    
 
     //render name to list events
     const renderName = (arr) => {
@@ -81,13 +95,35 @@ const ListEventsAdmin = () => {
     ) : (
         <div className={cx('container')}>
             <h1 className={cx('title')}>Danh Sách Sự Kiện</h1>
-            <input
-                type="text"
-                placeholder="Tìm kiếm Sự kiện..."
-                className={cx('inputSearch')}
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-            ></input>
+
+            <div className={cx('box-search')}>
+                <input
+                    type="text"
+                    placeholder="Tìm kiếm Sự kiện..."
+                    className={cx('inputSearch')}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                ></input>
+                
+               <div>
+                    <span>Từ: 
+                    <input
+                        type="date"
+                        className={cx('date-input')}
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                    /></span>
+        
+                    <span>đến: 
+                    <input
+                        type="date"
+                        className={cx('date-input')}
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                    /></span>
+               </div>
+            </div>
+
             <div className={cx('boxTable')}>
                 <table className={cx('table')}>
                     <thead className={cx('thead')}>
