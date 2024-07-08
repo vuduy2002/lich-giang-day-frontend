@@ -26,24 +26,30 @@ const FormShowEvent = ({ event, onClose }) => {
     return (
         <div className={cx('form-show-event')}>
             <div className={cx('content')}>
-                <h3>{event.eventName}</h3>
-                <p>{event.eventDescription}</p>
+                <h3 className={cx('head-title')}>
+                    {event.eventName.toUpperCase()}
+                </h3>
+                <p>-{event.eventDescription}</p>
                 <p>
-                    <span className={cx('title')}>Thời gian:</span>{' '}
+                    <span className={cx('title')}>-Ngày:</span>{' '}
+                    {event.date} 
+                </p>
+                <p>
+                    <span className={cx('title')}>-Thời gian:</span>{' '}
                     {event.timeStart} - {event.timeEnd}
                 </p>
                 <p>
-                    <span className={cx('title')}>Địa điểm:</span>{' '}
+                    <span className={cx('title')}>-Địa điểm:</span>{' '}
                     {event.eventLocation}
                 </p>
                 <p>
-                    <span className={cx('title')}>Người chủ trì:</span>{' '}
-                    {event.hostName.map((host) => host.name).join(', ')}
+                    <span className={cx('title')}>-Người chủ trì:</span>{' '}
+                    {event.host.map((host) => host.lecturerName).join(', ')}
                 </p>
                 <p>
-                    <span className={cx('title')}>Thành viên: </span>
+                    <span className={cx('title')}>-Thành viên: </span>
                     {event.participants
-                        .map((participant) => participant.name)
+                        .map((participant) => participant.lecturerName)
                         .join(', ')}
                 </p>
 

@@ -1,9 +1,6 @@
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
-import {
-    getEvents,
-    deleteEvent,
-} from '../../../services/AdminService/eventService';
+import { getEvents, deleteEvent } from '../../../services/eventService';
 import style from './listEvents.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';

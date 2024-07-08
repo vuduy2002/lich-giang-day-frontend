@@ -10,7 +10,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
-const LecturerForm = ({ children = null, listLecturers, onBack = false }) => {
+
+const LecturerForm = ({
+    children = null,
+    listLecturers = null,
+    onBack = false,
+    setChildren = false,
+}) => {
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
         lecturerId: '',
@@ -37,10 +43,6 @@ const LecturerForm = ({ children = null, listLecturers, onBack = false }) => {
         }
     }, [children]);
 
-    // useEffect(() => {
-    //     return !children ? resetForm() : console.log(children);
-    // }, []);
-    console.log(listLecturers);
     //create id
     const generateId = () => {
         const prefix = formData.isAdmin ? 'TC' : 'AD';
@@ -55,19 +57,6 @@ const LecturerForm = ({ children = null, listLecturers, onBack = false }) => {
 
         return newId;
     };
-
-    // if (!children) {
-    //     let newId = '';
-    //     let arrId = events.map((event) => event.eventId);
-    //     do {
-    //         const randomNum = Math.floor(1000 + Math.random() * 9000); // Random 4 number
-    //         newId = `EV${randomNum}`;
-    //     } while (arrId.includes(newId));
-    //     setFormData((prev) => ({
-    //         ...prev,
-    //         eventId: newId,
-    //     }));
-    // }
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -114,6 +103,7 @@ const LecturerForm = ({ children = null, listLecturers, onBack = false }) => {
                 await updateLecturer(children.lecturerId, formData);
                 resetForm();
                 alert('Cập nhật thành công!');
+                setChildren(null);
                 onBack(false);
             };
             handleUpdate();
@@ -147,6 +137,7 @@ const LecturerForm = ({ children = null, listLecturers, onBack = false }) => {
                 leftIcon={<FontAwesomeIcon icon={faChevronLeft} />}
                 onClick={() => {
                     resetForm();
+                    setChildren(null);
                     onBack(false);
                 }}
             >

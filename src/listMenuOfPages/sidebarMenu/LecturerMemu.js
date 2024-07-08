@@ -1,4 +1,4 @@
-import { faFlag } from '@fortawesome/free-regular-svg-icons';
+
 import {
     faCalendarDay,
     faCalendarPlus,
@@ -12,16 +12,16 @@ export const MENU_ITEMS_LECTURER = [
         title: 'Lịch của bạn',
         to: '/lecturerCalender',
     },
-    // {
-    //     icon: <FontAwesomeIcon icon={faCalendarPlus}></FontAwesomeIcon>,
-    //     title: 'lêu',
-    //     to: '/createEvents',
-    // },
-    // {
-    //     icon: <FontAwesomeIcon icon={faRectangleList}></FontAwesomeIcon>,
-    //     title: 'cut',
-    //     to: '/createSchedules',
-    // },
+    {
+        icon: <FontAwesomeIcon icon={faCalendarPlus}></FontAwesomeIcon>,
+        title: 'Tạo sự kiện',
+        //to: '/createEvents',
+    },
+    {
+        icon: <FontAwesomeIcon icon={faRectangleList}></FontAwesomeIcon>,
+        title: 'Danh sách sự kiện',
+        //to: '/createSchedules',
+    },
     // {
     //     icon: <FontAwesomeIcon icon={faRectangleList}></FontAwesomeIcon>,
     //     title: 'bien',

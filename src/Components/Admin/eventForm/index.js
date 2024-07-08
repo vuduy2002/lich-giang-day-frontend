@@ -12,7 +12,7 @@ import {
     createEvent,
     updateEvent,
     getEvents,
-} from '../../../services/AdminService/eventService';
+} from '../../../services/eventService';
 import Search from '../searchLecturer';
 
 const cx = classNames.bind(style);
@@ -244,7 +244,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
         }
     }, [events, children]);
 
-    console.log(formData);
+    
     return (
         <div className={cx('container')}>
             {onBack && (

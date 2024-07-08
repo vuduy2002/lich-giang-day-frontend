@@ -76,7 +76,7 @@ const CalendarComponent = ({ events }) => {
                     <div className={cx('events-wrapper')}>
                         {dayEvents.map((event) => (
                             <div
-                                key={event.id}
+                                key={event.eventId}
                                 className={cx('event-detail')}
                                 onClick={() => handleEventClick(event)}
                             >

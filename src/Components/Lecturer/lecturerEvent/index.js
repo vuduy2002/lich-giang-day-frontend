@@ -1,7 +1,7 @@
 // LecturerEvent.jsx
 import React, { useEffect, useState } from 'react';
 import CalendarComponent from '../../Calender';
-import { getEvents } from '../../../services/AdminService/eventService';
+import { getEvents } from '../../../services/eventService';
 
 function LecturerEvent() {
     const [events, setEvents] = useState([]);
@@ -23,13 +23,14 @@ function LecturerEvent() {
     useEffect(() => {
         const eventOfUser = events.filter(
             (event) =>
-                event.hostName.some((host) => host.id === userId) ||
+                event.host.some((host) => host.lecturerId === userId) ||
                 event.participants.some(
-                    (participant) => participant.id === userId,
+                    (participant) => participant.lecturerId === userId,
                 ),
         );
         setFilteredEvents(eventOfUser);
     }, [events, userId]);
+    console.log(filteredEvents);
 
     return <CalendarComponent events={filteredEvents} />;
 }
