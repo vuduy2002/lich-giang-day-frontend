@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './listLectures.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { getLecturers, deleteLecturer } from '../../../services/lectureService';
-import Button from '../../Button/Button';
+import { faChevronLeft, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { getLecturers, deleteLecturer } from '../../../../services/lectureService';
+import Button from '../../../Button/Button';
 import LecturerForm from '../lecturerForm';
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 
@@ -60,6 +60,15 @@ const ListLecturersAdmin = () => {
         </LecturerForm>
     ) : (
         <div className={cx('container')}>
+            <Button
+                outline
+                leftIcon={<FontAwesomeIcon icon={faChevronLeft} />}
+                onClick={() => {
+                   window.history.back();
+                }}
+            >
+                Quay lại
+            </Button>
             <h2 className={cx('title')}>Danh sách Giảng viên</h2>
             <div className={cx('header')}>
                 <Button

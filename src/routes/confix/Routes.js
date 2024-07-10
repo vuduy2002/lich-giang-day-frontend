@@ -1,5 +1,7 @@
 const routes = {
     home: '/',
+    homeAdmin: '/homeAdmin',
+
     login: '/login',
     profile: '/profile',
 
@@ -8,6 +10,8 @@ const routes = {
     createSchedules: '/createSchedules',
     createEvents: '/createEvents',
     managermentLecturers: '/managermentLecturers',
+    managermentEventTypes: '/managermentEventTypes',
+    managementLocations: '/managementLocations',
     listEvents: '/listEvents',
     report: '/report',
 

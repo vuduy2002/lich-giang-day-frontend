@@ -2,8 +2,8 @@ import classNames from 'classnames/bind';
 
 import style from './sidebar.module.scss';
 import Button from '../../../Components/Button';
-import { MENU_ITEMS_ADMIN } from '../../../listMenuOfPages/sidebarMenu/AdminMenu';
-import { MENU_ITEMS_LECTURER } from '../../../listMenuOfPages/sidebarMenu/LecturerMemu';
+import { SIDE_MENU_ITEMS_ADMIN } from '../../../listMenuOfPages/admin';
+import { SIDE_MENU_ITEMS_LECTURER } from '../../../listMenuOfPages/lecturer';
 
 const cx = classNames.bind(style);
 function Sidebar() {
@@ -12,9 +12,9 @@ function Sidebar() {
 
     let Menu;
     if (rolesUser === 'admin') {
-        Menu = MENU_ITEMS_ADMIN;
+        Menu = SIDE_MENU_ITEMS_ADMIN;
     } else {
-        Menu = MENU_ITEMS_LECTURER;
+        Menu = SIDE_MENU_ITEMS_LECTURER;
     }
 
     const render = () => {

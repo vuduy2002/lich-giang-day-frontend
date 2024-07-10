@@ -21,11 +21,19 @@
     .head-title {
         margin-bottom: 1rem;
     }
+    .row-title{
+        display: flex;
+    }
+    
     .title {
         display: inline-block;
         width: 18rem;
         font-weight: 500;
         line-height: 3rem;
+        flex: 1;
+    }
+    .text{
+        flex: 5;
     }
 
     .form-group {

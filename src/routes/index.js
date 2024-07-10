@@ -5,13 +5,19 @@ import HomePage from '../Pages/Home';
 import Login from '../Components/login';
 import profilePage from '../Pages/profilePage';
 
-// import AdminPage from '../Pages/adminPage';
+import HomeAdminPage from '../Pages/adminPage/homeAdmin';
 import CreateEvents from '../Pages/adminPage/createEvents';
 
 import CreateSchedule from '../Pages/adminPage/createSchedules';
 import ListEvents from '../Pages/adminPage/listEvents';
 import ManagementLecturers from '../Pages/adminPage/managementLecturers';
+import ManagementEventTypes from '../Pages/adminPage/managementEventTypes';
+import ManagementLocations from '../Pages/adminPage/managementLocations';
+
+
 import Report from '../Pages/adminPage/report';
+
+//lecturer
 import LecturerCalender from '../Pages/lecturerPage/lecturerCalender';
 
 const publicPages = [
@@ -19,7 +25,7 @@ const publicPages = [
     { path: routes.login, component: Login, layout: null },
 
     //admin pages
-    // { path: routes.admin, roles: 'admin', component: AdminPage },
+    { path: routes.homeAdmin, roles: 'admin', component: HomeAdminPage, layout: null },
     { path: routes.createEvents, roles: 'admin', component: CreateEvents },
     { path: routes.createSchedules, roles: 'admin', component: CreateSchedule },
     { path: routes.listEvents, roles: 'admin', component: ListEvents },
@@ -27,6 +33,19 @@ const publicPages = [
         path: routes.managermentLecturers,
         roles: 'admin',
         component: ManagementLecturers,
+        layout: HeaderOnly
+    },
+    {
+        path: routes.managermentEventTypes,
+        roles: 'admin',
+        component: ManagementEventTypes,
+        layout: HeaderOnly
+    },
+    {
+        path: routes.managementLocations,
+        roles: 'admin',
+        component: ManagementLocations,
+        layout: HeaderOnly
     },
     { path: routes.report, roles: 'admin', component: Report },
 

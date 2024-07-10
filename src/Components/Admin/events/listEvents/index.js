@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
-import { getEvents, deleteEvent } from '../../../services/eventService';
+import { getEvents, deleteEvent } from '../../../../services/eventService';
 import style from './listEvents.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -25,6 +25,7 @@ const ListEventsAdmin = () => {
         fetchEvents();
     }, [checkUpdate]);
 
+   
     // Thực hiện xử lý xóa sự kiện
     const handleDelete = async (event) => {
         if (
@@ -48,7 +49,7 @@ const ListEventsAdmin = () => {
     const filteredEvents = events.filter((event) => {
         const name = event.eventName?.toLowerCase() || '';
         const description = event.eventDescription?.toLowerCase() || '';
-        const location = event.eventLocation?.toLowerCase() || '';
+        // const location = event.eventLocation?.toLowerCase() || '';
         const host = Array.isArray(event.host)
             ? event.host
                   .map((host) => host.lecturerName.toLowerCase())
@@ -72,7 +73,7 @@ const ListEventsAdmin = () => {
         return (
             (name.includes(query) ||
             description.includes(query) ||
-            location.includes(query) ||
+            // location.includes(query) ||
             host.includes(query) ||
             participants.includes(query)) &&
             isAfterStartDate &&
@@ -151,7 +152,7 @@ const ListEventsAdmin = () => {
                                     <td>{event.date}</td>
                                     <td>{event.timeStart}</td>
                                     <td>{event.timeEnd}</td>
-                                    <td>{event.eventLocation}</td>
+                                    <td>{event.eventLocation.locationName}</td>
                                     <td>{event.eventType.typeName}</td>
                                     <td>{renderName(event.host)}</td>
                                     <td>{renderName(event.participants)}</td>

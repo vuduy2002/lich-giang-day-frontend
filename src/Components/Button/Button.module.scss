@@ -11,14 +11,14 @@
     background-color: white;
     border: 1px solid transparent;
     user-select: none;
-    box-shadow: 4px 4px 4px rgb(191, 190, 190);
+    
     &:hover {
         background-color: rgb(214, 216, 216);
     }
 
-    // + .wrapper {
-    //     // margin-left: 8px;
-    // }
+    + .wrapper {
+        margin-left: 8px;
+    }
     & .disabled {
         pointer-events: none;
         opacity: 0.5;
@@ -45,7 +45,7 @@
 
 .outline {
     border-color: var(--primary-color);
-    color: var(--primary-color);
+    color: var(--primary-color) !important;
     &:hover {
         background-color: rgb(255 238 242);
     }

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { memo, useRef, useState } from 'react';
 import Tippy from '@tippyjs/react/headless';
-import Popper from '../../Popper';
+import Popper from '../../../Popper';
 import ItemSearch from './ItemSearch';
 
 const cx = classNames.bind(style);

@@ -4,8 +4,8 @@ import styles from './lecturer.module.scss';
 import {
     createLecturer,
     updateLecturer,
-} from '../../../services/lectureService';
-import Button from '../../Button/Button';
+} from '../../../../services/lectureService';
+import Button from '../../../Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -13,11 +13,10 @@ const cx = classNames.bind(styles);
 
 const LecturerForm = ({
     children = null,
-    listLecturers = null,
-    onBack = false,
-    setChildren = false,
+    listLecturers = [],
+    onBack = () => {},
+    setChildren = () => {},
 }) => {
-    const [error, setError] = useState('');
     const [formData, setFormData] = useState({
         lecturerId: '',
         isAdmin: false,
@@ -28,24 +27,36 @@ const LecturerForm = ({
         password: '',
         email: '',
     });
+    const [formErrors, setFormErrors] = useState({
+        position: '',
+        lecturerName: '',
+        lecturerPhone: '',
+        password: '',
+        email: '',
+    });
+
     const inputRef = useRef();
 
-    let title;
-    if (children) {
-        title = 'Cập nhật thông tin giảng viên';
-    } else {
-        title = 'Thêm mới giảng viên';
-    }
+    let title = children ? 'Cập nhật thông tin giảng viên' : 'Thêm mới giảng viên';
+
+    useEffect(() => {
+        const defaultPrefix = 'TC'; // Default prefix when component mounts
+        const newId = generateId(defaultPrefix);
+        setFormData((prev) => ({
+            ...prev,
+            lecturerId: newId,
+        }));
+    }, []);
 
     useEffect(() => {
         if (children) {
-            setFormData(children);
+            const { __v, _id, ...rest } = children;
+            setFormData(rest);
         }
     }, [children]);
 
-    //create id
-    const generateId = () => {
-        const prefix = formData.isAdmin ? 'TC' : 'AD';
+    // Create id with prefix based on isAdmin status
+    const generateId = (prefix) => {
         let newId = '';
         let arrId = listLecturers.map((lecturer) => lecturer.lecturerId);
         do {
@@ -53,48 +64,50 @@ const LecturerForm = ({
             newId = `${prefix}${randomNum}`;
         } while (arrId.includes(newId));
 
-        // Check for ID uniqueness
-
         return newId;
     };
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value,
-        }));
-
         if (name === 'isAdmin') {
-            const newId = generateId();
-            if (newId) {
-                setFormData((prev) => ({
-                    ...prev,
-                    lecturerId: newId,
-                }));
-            }
+            const prefix = checked ? 'AD' : 'TC';
+            const newId = generateId(prefix);
+            setFormData((prev) => ({
+                ...prev,
+                [name]: checked,
+                lecturerId: newId,
+            }));
+        } else {
+            setFormData((prev) => ({
+                ...prev,
+                [name]: type === 'checkbox' ? checked : value,
+            }));
         }
     };
 
     const validateForm = () => {
-        for (let key in formData) {
-            if (
-                !formData[key] &&
-                key !== 'lecturerId' &&
-                key !== 'avatar' &&
-                key !== 'isAdmin'
-            ) {
-                setError('Vui lòng nhập đầy đủ thông tin.');
-                return false;
-            }
+        const errors = {};
+        if (!formData.position) errors.position = 'Vui lòng nhập chức vụ.';
+        if (!formData.lecturerName) errors.lecturerName = 'Vui lòng nhập tên giảng viên.';
+        if (!formData.lecturerPhone) errors.lecturerPhone = 'Vui lòng nhập số điện thoại.';
+        if (!formData.password) {
+            errors.password = 'Vui lòng nhập mật khẩu.';
+        } else if (formData.password.length < 6) {
+            errors.password = 'Mật khẩu phải có ít nhất 6 ký tự.';
         }
-        setError('');
-        return true;
+        if (!formData.email) {
+            errors.email = 'Vui lòng nhập email.';
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            errors.email = 'Email không hợp lệ.';
+        }
+
+        setFormErrors(errors);
+        return Object.keys(errors).length === 0;
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (error || !validateForm()) {
+        if (!validateForm()) {
             return;
         }
 
@@ -128,9 +141,16 @@ const LecturerForm = ({
             password: '',
             email: '',
         });
+        setFormErrors({
+            position: '',
+            lecturerName: '',
+            lecturerPhone: '',
+            password: '',
+            email: '',
+        });
         inputRef.current.focus();
     };
-    // console.log('chidren', children, 'formdata', formData);
+
     return (
         <div className={cx('container')}>
             <Button
@@ -145,7 +165,7 @@ const LecturerForm = ({
             </Button>
             <h2>{title}</h2>
             <form onSubmit={handleSubmit} className={cx('form')}>
-                <label className={cx('lable')}>
+                <label className={cx('label')}>
                     <span className={cx('title')}>ID:</span>
                     <input
                         type="text"
@@ -156,7 +176,7 @@ const LecturerForm = ({
                         className={cx('input')}
                     />
                 </label>
-                <label className={cx('lable')}>
+                <label className={cx('label')}>
                     <span className={cx('title')}>Is Admin:</span>
                     <div className={cx('wrapCheckbox')}>
                         <input
@@ -167,11 +187,11 @@ const LecturerForm = ({
                             className={cx('checkbox')}
                         />
                         <span>
-                            Lưu ý: Click ít nhất 1 lần để tạo ID theo quyền!
+                            Lưu ý: Click để tạo ID theo quyền!
                         </span>
                     </div>
                 </label>
-                <label className={cx('lable')}>
+                <label className={cx('label')}>
                     <span className={cx('title')}>Chức vụ:</span>
                     <input
                         type="text"
@@ -181,8 +201,11 @@ const LecturerForm = ({
                         onChange={handleChange}
                         className={cx('input')}
                     />
+                    {formErrors.position && (
+                        <p className={cx('error')}>{formErrors.position}</p>
+                    )}
                 </label>
-                <label className={cx('lable')}>
+                <label className={cx('label')}>
                     <span className={cx('title')}>Avatar URL:</span>
                     <input
                         type="text"
@@ -193,7 +216,7 @@ const LecturerForm = ({
                         className={cx('input')}
                     />
                 </label>
-                <label className={cx('lable')}>
+                <label className={cx('label')}>
                     <span className={cx('title')}>Tên Giảng viên:</span>
                     <input
                         type="text"
@@ -202,8 +225,11 @@ const LecturerForm = ({
                         onChange={handleChange}
                         className={cx('input')}
                     />
+                    {formErrors.lecturerName && (
+                        <p className={cx('error')}>{formErrors.lecturerName}</p>
+                    )}
                 </label>
-                <label className={cx('lable')}>
+                <label className={cx('label')}>
                     <span className={cx('title')}>Số điện thoại:</span>
                     <input
                         type="text"
@@ -212,8 +238,11 @@ const LecturerForm = ({
                         onChange={handleChange}
                         className={cx('input')}
                     />
+                    {formErrors.lecturerPhone && (
+                        <p className={cx('error')}>{formErrors.lecturerPhone}</p>
+                    )}
                 </label>
-                <label className={cx('lable')}>
+                <label className={cx('label')}>
                     <span className={cx('title')}>Mật khẩu:</span>
                     <input
                         type="password"
@@ -222,8 +251,11 @@ const LecturerForm = ({
                         onChange={handleChange}
                         className={cx('input')}
                     />
+                    {formErrors.password && (
+                        <p className={cx('error')}>{formErrors.password}</p>
+                    )}
                 </label>
-                <label className={cx('lable')}>
+                <label className={cx('label')}>
                     <span className={cx('title')}>Email:</span>
                     <input
                         type="email"
@@ -232,8 +264,13 @@ const LecturerForm = ({
                         onChange={handleChange}
                         className={cx('input')}
                     />
+                    {formErrors.email && (
+                        <p className={cx('error')}>{formErrors.email}</p>
+                    )}
                 </label>
-                {error && <p className={cx('error')}>{error}</p>}
+                {Object.values(formErrors).some((error) => error) && (
+                    <p className={cx('error')}>Vui lòng kiểm tra lại các trường thông tin.</p>
+                )}
                 <Button primary>{title}</Button>
             </form>
         </div>

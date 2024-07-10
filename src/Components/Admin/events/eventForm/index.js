@@ -4,16 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 import style from './eventForm.module.scss';
-import Button from '../../Button/Button';
-import { getLecturers } from '../../../services/lectureService';
-import { getEventTypes } from '../../../services/eventTypeService';
-
+import Button from '../../../Button/Button';
+import { getLecturers } from '../../../../services/lectureService';
+import { getEventTypes } from '../../../../services/eventTypeService';
+import { getLocations } from '../../../../services/locationService';
 import {
     createEvent,
     updateEvent,
     getEvents,
-} from '../../../services/eventService';
-import Search from '../searchLecturer';
+} from '../../../../services/eventService';
+import Search from '../../events/searchLecturer';
 
 const cx = classNames.bind(style);
 
@@ -35,6 +35,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
 
     const [users, setUsers] = useState([]);
     const [eventTypes, setEventTypes] = useState([]);
+    const [eventLocations, setEventLocations] = useState([])
     const [events, setEvents] = useState([]);
     const [errors, setErrors] = useState({});
     const [availableTimes, setAvailableTimes] = useState([]);
@@ -58,11 +59,18 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
             // Fetch events from API
             const response3 = await getEvents();
             setEvents(response3.data);
+
+            // Fetch locations from API
+            const response4 = await getLocations();
+            setEventLocations(response4.data);
         };
 
         fetchData();
         // nếu update -> set data
-        if (children) setFormData(children);
+        if (children) {
+            const {__v, _id, ...rest} = children 
+            setFormData(rest)
+        };
     }, [children]);
 
     // Fillter ngày dc chọn
@@ -126,8 +134,10 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
             newErrors.timeStart = 'Vui lòng nhập thời gian bắt đầu';
         if (!formData.timeEnd)
             newErrors.timeEnd = 'Vui lòng nhập thời gian kết thúc';
+        if (formData.timeEnd < formData.timeStart)
+            newErrors.timeEnd = 'Thời gian kết thúc không phù';
         if (!formData.eventLocation)
-            newErrors.eventLocation = 'Vui lòng nhập địa điểm';
+            newErrors.eventLocation = 'Vui chọn nhập địa điểm';
         if (!formData.eventType)
             newErrors.eventType = 'Vui lòng chọn loại sự kiện';
         if (formData.host.length === 0)
@@ -172,6 +182,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
             if (children) {
                 newData = {
                     ...formData,
+                    eventLocation: formData.locationId,
                     eventType: formData.eventType.typeId,
                     host: getLecturerIds(formData.host),
                     participants: getLecturerIds(formData.participants),
@@ -186,6 +197,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
             } else {
                 newData = {
                     ...formData,
+                    
                     eventType: formData.eventType,
                     host: getLecturerIds(formData.host),
                     participants: getLecturerIds(formData.participants),
@@ -209,6 +221,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                     eventType: '',
                     host: [],
                     participants: [],
+                    
                 });
 
                 setErrors({});
@@ -427,19 +440,24 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                         <span className={cx('error')}>{errors.time}</span>
                     )}
                 </label>
+
                 <label className={cx('label')}>
                     Địa điểm:
-                    <input
-                        className={cx('input')}
-                        type="text"
+                    <select
+                        className={cx('select')}
                         name="eventLocation"
-                        value={formData.eventLocation}
+                        value={formData.eventLocation.locationId}
                         onChange={handleChange}
-                    />
+                    >
+                        <option value="">Chọn địa điểm</option>
+                        {eventLocations.map((location) => (
+                            <option key={location.locationId} value={location.locationId}>
+                                {location.locationName}
+                            </option>
+                        ))}
+                    </select>
                     {errors.eventLocation && (
-                        <span className={cx('error')}>
-                            {errors.eventLocation}
-                        </span>
+                        <span className={cx('error')}>{errors.eventLocation}</span>
                     )}
                 </label>
 

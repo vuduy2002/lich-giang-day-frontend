@@ -1,4 +1,4 @@
-import ListEventsAdmin from '../../../Components/Admin/listEvents';
+import ListEventsAdmin from '../../../Components/Admin/events/listEvents';
 
 function ListEvents() {
     return <ListEventsAdmin />;

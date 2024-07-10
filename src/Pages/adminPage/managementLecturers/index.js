@@ -1,4 +1,4 @@
-import ListLecturersAdmin from '../../../Components/Admin/listLecturers';
+import ListLecturersAdmin from '../../../Components/Admin/lecturers/listLecturers';
 
 function ManagementLecturers() {
     return <ListLecturersAdmin />;

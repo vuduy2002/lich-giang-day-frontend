@@ -4,7 +4,7 @@ import style from './formShowEvent.module.scss';
 import Button from '../../Button';
 
 const cx = classNames.bind(style);
-
+ 
 const FormShowEvent = ({ event, onClose }) => {
     const [attending, setAttending] = useState(true);
     const [reason, setReason] = useState('');
@@ -29,28 +29,30 @@ const FormShowEvent = ({ event, onClose }) => {
                 <h3 className={cx('head-title')}>
                     {event.eventName.toUpperCase()}
                 </h3>
-                <p>-{event.eventDescription}</p>
-                <p>
-                    <span className={cx('title')}>-Ngày:</span>{' '}
-                    {event.date} 
+                <p >{event.eventDescription}</p>
+                <p className={cx('row-title')}>
+                    <span className={cx('title')}>Ngày:</span>{' '}
+                    <span className={cx('text')}>{event.date}</span> 
+                </p> 
+                <p className={cx('row-title')}>
+                    <span className={cx('title')}>Thời gian:</span>{' '}
+                    <span className={cx('text')}>{event.timeStart} - {event.timeEnd}</span>
                 </p>
-                <p>
-                    <span className={cx('title')}>-Thời gian:</span>{' '}
-                    {event.timeStart} - {event.timeEnd}
+                <p className={cx('row-title')}>
+                    <span className={cx('title')}>Địa điểm:</span>{' '}
+                    <span className={cx('text')}>{event.eventLocation}</span>
                 </p>
-                <p>
-                    <span className={cx('title')}>-Địa điểm:</span>{' '}
-                    {event.eventLocation}
+                <p className={cx('row-title')}>
+                    <span className={cx('title')}>Người chủ trì:</span>{' '}
+                    <span className={cx('text')}>{event.host.map((host) => host.lecturerName).join(', ')}</span>
                 </p>
-                <p>
-                    <span className={cx('title')}>-Người chủ trì:</span>{' '}
-                    {event.host.map((host) => host.lecturerName).join(', ')}
-                </p>
-                <p>
-                    <span className={cx('title')}>-Thành viên: </span>
-                    {event.participants
-                        .map((participant) => participant.lecturerName)
-                        .join(', ')}
+                <p className={cx('row-title')}>
+                    <span className={cx('title')}>Thành viên: </span>
+                    <span className={cx('text')}>
+                        {event.participants
+                            .map((participant) => participant.lecturerName)
+                            .join(', ')}
+                    </span>
                 </p>
 
                 <form onSubmit={handleSubmit}>

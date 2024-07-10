@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-
 import { login } from '../../services/authService';
-
 import classNames from 'classnames/bind';
-
+import routes from '../../routes/confix/Routes';
 import style from './Login.module.scss';
 import Button from '../../Components/Button';
 
@@ -19,13 +17,20 @@ const Login = () => {
         try {
             const user = await login(userId, password);
             if (user.role === 'admin') {
-                window.location.href = '/listEvents';
+                window.location.href = routes.homeAdmin;
             } else if (user.role === 'lecturer') {
-                window.location.href = '/lecturerCalender';
+                window.location.href = routes.lecturerCalender;
             }
         } catch (error) {
-            console.error('Login failed', error);
-            setErrorMessage('Tên đăng nhập hoặc mật khẩu không đúng.');
+            if (error.message === 'Invalid userId') {
+                setErrorMessage('ID nhập không đúng.');
+            } else if (error.message === 'Invalid password') {
+                setErrorMessage('Mật khẩu không đúng.');
+            } else if (error.message === 'Password too short') {
+                setErrorMessage('Mật khẩu phải có ít nhất 6 ký tự.');
+            } else {
+                setErrorMessage('Đã xảy ra lỗi. Vui lòng thử lại.');
+            }
         }
     };
 
@@ -35,11 +40,8 @@ const Login = () => {
                 <h1 className={cx('login-title')}>Đăng nhập</h1>
                 <form onSubmit={handleSubmit}>
                     <div className={cx('input-group')}>
-                        <label
-                            className={cx('input-group-lable')}
-                            htmlFor="username"
-                        >
-                            Tên đăng nhập
+                        <label className={cx('input-group-label')} htmlFor="username">
+                            ID đăng nhập
                         </label>
                         <input
                             className={cx('input-group-input')}
@@ -52,10 +54,7 @@ const Login = () => {
                         />
                     </div>
                     <div className={cx('input-group')}>
-                        <label
-                            className={cx('input-group-lable')}
-                            htmlFor="password"
-                        >
+                        <label className={cx('input-group-label')} htmlFor="password">
                             Mật khẩu
                         </label>
                         <input

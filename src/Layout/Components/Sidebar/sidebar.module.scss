@@ -8,4 +8,7 @@
     justify-content: start;
     margin-bottom: 1rem;
     line-height: 1.8rem;
+    & + .btt {margin-left: 0px;}
+    box-shadow: 4px 4px 4px rgb(191, 190, 190);
 }
+

@@ -12,6 +12,7 @@ const func = () => {};
 
 function Menu({ children, visible, items = [], onChange = func }) {
     const [history, setHistory] = useState([{ data: items }]);
+   
 
     //Lấy theo phần tử cuối
     const curentMenu = history[history.length - 1];
@@ -36,10 +37,14 @@ function Menu({ children, visible, items = [], onChange = func }) {
             );
         });
     };
-
+    console.log(
+        renderItems()
+    )
     return (
         <Tippy
             interactive
+            appendTo={document.body}
+            placement="bottom-start"
             visible={visible}
             render={(attrs) => (
                 <div className={cx('menu-list')} tabIndex="-1" {...attrs}>
