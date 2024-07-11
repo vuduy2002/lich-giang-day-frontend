@@ -11,7 +11,7 @@ import Popper from '../Popper/Popper';
 
 const cx = classNames.bind(style);
 
-const CalendarComponent = ({ events }) => {
+const CalendarComponent = ({ events, curUser }) => {
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
     const [dayEvents, setDayEvents] = useState([]);
@@ -59,7 +59,7 @@ const CalendarComponent = ({ events }) => {
     };
 
     const currentDay = new Date();
-
+    
     return (
         <div className={cx('wrapper')}>
             <Calendar
@@ -91,7 +91,7 @@ const CalendarComponent = ({ events }) => {
             )}
 
             {selectedEvent && (
-                <FormShowEvent event={selectedEvent} onClose={handleClose} />
+                <FormShowEvent curUser={curUser} event={selectedEvent} onClose={handleClose} />
             )}
         </div>
     );

@@ -37,9 +37,7 @@ function Menu({ children, visible, items = [], onChange = func }) {
             );
         });
     };
-    console.log(
-        renderItems()
-    )
+   
     return (
         <Tippy
             interactive

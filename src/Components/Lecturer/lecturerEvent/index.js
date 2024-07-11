@@ -30,9 +30,8 @@ function LecturerEvent() {
         );
         setFilteredEvents(eventOfUser);
     }, [events, userId]);
-    console.log(filteredEvents);
 
-    return <CalendarComponent events={filteredEvents} />;
+    return <CalendarComponent curUser={userId} events={filteredEvents} />;
 }
 
 export default LecturerEvent;

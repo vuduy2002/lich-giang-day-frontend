@@ -13,6 +13,7 @@ import {
     updateEvent,
     getEvents,
 } from '../../../../services/eventService';
+import { createAttendanceReport, updateAttendanceReport } from '../../../../services/attendanceService';
 import Search from '../../events/searchLecturer';
 
 const cx = classNames.bind(style);
@@ -30,8 +31,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
         host: [],
         participants: [],
     });
-
-    // to create or update
+   
 
     const [users, setUsers] = useState([]);
     const [eventTypes, setEventTypes] = useState([]);
@@ -173,10 +173,24 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
         });
     };
 
+    //trasform memebers
+    const idToObReport = (arr)=>{
+       const values = arr.map((item)=>{
+            return {
+                lecturerId: item,
+                confirm: true,
+                reason: ""}  
+        })
+        return values
+    }
+
     // submit
     const handleSubmit = (e) => {
         e.preventDefault();
+        
+        //format lại các trường trước khi đâyr lên data base
         let newData = {};
+        let attendanceData = {};
         //
         if (validateForm()) {
             if (children) {
@@ -187,24 +201,38 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                     host: getLecturerIds(formData.host),
                     participants: getLecturerIds(formData.participants),
                 };
+                attendanceData = {
+                    eventId: newData.eventId,
+                    lecturers: idToObReport([...newData.host,...newData.participants])
+                }
                 // update to database
                 const handleUpdate = async () => {
                     await updateEvent(children.eventId, newData);
+                    await updateAttendanceReport(children.eventId, attendanceData);
                 };
                 handleUpdate();
                 alert('Cập nhật thành công!');
                 onBack(false);
             } else {
                 newData = {
-                    ...formData,
-                    
+                    ...formData, 
                     eventType: formData.eventType,
                     host: getLecturerIds(formData.host),
                     participants: getLecturerIds(formData.participants),
                 };
+                
+                //create 
+                attendanceData = {
+                    eventId: newData.eventId,
+                    lecturers: idToObReport([...newData.host,...newData.participants])
+                }
+                
+                
                 // create to database
+                
                 const handleCreate = async () => {
                     await createEvent(newData);
+                    await createAttendanceReport(attendanceData);
                 };
                 handleCreate();
 
