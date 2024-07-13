@@ -1,5 +1,7 @@
+import ShowReport from '../../../Components/Admin/report';
+
 function Report() {
-    return <h1>Report</h1>;
+    return <ShowReport/>;
 }
 
 export default Report;

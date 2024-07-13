@@ -6,6 +6,8 @@ import style from './listEvents.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash, faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import EventForm from '../eventForm';
+import {convertFromYYYYMMDD} from '../../../formatDate'
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(style);
 
@@ -41,11 +43,6 @@ const ListEventsAdmin = () => {
     const handleEdit = (event) => {
         setCheckUpdate(true);
         setCurrentEvent(event);
-    };
-
-    const handleReport = (event) => {
-        // Handle the reporting action here
-        console.log(`Reporting for event: ${event.eventId}`);
     };
 
     const filteredEvents = events.filter((event) => {
@@ -151,20 +148,21 @@ const ListEventsAdmin = () => {
                                     <td>{event.eventId}</td>
                                     <td>{event.eventName}</td>
                                     <td>{event.eventDescription}</td>
-                                    <td>{event.date}</td>
+                                    <td>{convertFromYYYYMMDD(event.date)}</td>
                                     <td>{event.timeStart}</td>
                                     <td>{event.timeEnd}</td>
-                                    <td>{event.eventLocation.locationName}</td>
-                                    <td>{event.eventType.typeName}</td>
+                                    <td>{event.eventLocation?.locationName || 'Dữ liệu đã bị chỉnh sửa hoặc xóa!'}</td>
+                                    <td>{event.eventType?.typeName || 'Dữ liệu đã bị chỉnh sửa hoặc xóa!'}</td>
                                     <td>{renderName(event.host)}</td>
                                     <td>{renderName(event.participants)}</td>
                                     <td>
                                         {isPastEvent(event.date) ? (
-                                            <FontAwesomeIcon
-                                                icon={faFileAlt}
-                                                onClick={() => handleReport(event)}
-                                                className={cx('icon', 'report-icon')}
-                                            />
+                                           <Link to='/report' state={event.eventId}>
+                                                <FontAwesomeIcon
+                                                    icon={faFileAlt}
+                                                    className={cx('icon', 'report-icon')}
+                                                />
+                                           </Link>
                                         ) : (
                                             <>
                                                 <FontAwesomeIcon

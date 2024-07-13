@@ -10,14 +10,14 @@ const FormShowEvent = ({ event, curUser, onClose }) => {
     const [attending, setAttending] = useState({});
     const [obConfirm, setObConfirm] = useState({
         lecturerId: '',
-        confirm: true,
+        confirm: 'chưa phản hồi',
         reason: ''
     });
 
     useEffect(() => {
         const fetchData = async () => {
             const response = await getAttendanceReportById(event.eventId);
-            const {__v, _id, ...rest} = response.data;
+            const { __v, _id, ...rest } = response.data;
             setAttending(rest);
         };
         fetchData();
@@ -26,7 +26,7 @@ const FormShowEvent = ({ event, curUser, onClose }) => {
     useEffect(() => {
         if (attending.lecturers) {
             const atdOfCur = attending.lecturers.find((item) => item.lecturerId === curUser);
-            setObConfirm(atdOfCur || { lecturerId: curUser, confirm: true, reason: '' });
+            setObConfirm(atdOfCur || { lecturerId: curUser, confirm: 'chưa phản hồi', reason: '' });
         }
     }, [attending, curUser]);
 
@@ -51,7 +51,9 @@ const FormShowEvent = ({ event, curUser, onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const updatedObConfirm = obConfirm.confirm ? { ...obConfirm, reason: '' } : obConfirm;
+
+        // Không thay đổi `reason` nếu `confirm` không phải `true`
+        const updatedObConfirm = obConfirm.confirm === true ? { ...obConfirm, reason: '' } : obConfirm;
 
         const updatedLecturers = attending.lecturers.map((lecturer) =>
             lecturer.lecturerId === updatedObConfirm.lecturerId ? updatedObConfirm : lecturer

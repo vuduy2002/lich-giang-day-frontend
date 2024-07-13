@@ -174,12 +174,14 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
     };
 
     //trasform memebers
-    const idToObReport = (arr)=>{
-       const values = arr.map((item)=>{
+    const idToObReport = (arrOb)=>{
+       const values = arrOb.map((item)=>{
             return {
-                lecturerId: item,
-                confirm: true,
-                reason: ""}  
+                lecturerId: item.lecturerId,
+                lecturerName: item.lecturerName,
+                confirm: 'chưa phản hồi!',
+                reason: ""
+            }  
         })
         return values
     }
@@ -196,14 +198,14 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
             if (children) {
                 newData = {
                     ...formData,
-                    eventLocation: formData.locationId,
-                    eventType: formData.eventType.typeId,
+                    eventLocation: formData.eventLocation.locationId? formData.eventLocation.locationId: formData.eventLocation,
+                    eventType: formData.eventType.typeId? formData.eventType.typeId: formData.eventType,
                     host: getLecturerIds(formData.host),
                     participants: getLecturerIds(formData.participants),
                 };
                 attendanceData = {
                     eventId: newData.eventId,
-                    lecturers: idToObReport([...newData.host,...newData.participants])
+                    lecturers: idToObReport([...formData.host,...formData.participants])
                 }
                 // update to database
                 const handleUpdate = async () => {
@@ -224,7 +226,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                 //create 
                 attendanceData = {
                     eventId: newData.eventId,
-                    lecturers: idToObReport([...newData.host,...newData.participants])
+                    lecturers: idToObReport([...formData.host,...formData.participants])
                 }
                 
                 
@@ -285,7 +287,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
         }
     }, [events, children]);
 
-    
+   console.log(formData)
     return (
         <div className={cx('container')}>
             {onBack && (
@@ -319,7 +321,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                     <select
                         className={cx('select')}
                         name="eventType"
-                        value={formData.eventType.typeId}
+                        value={formData?.eventType?.typeId }
                         onChange={handleChange}
                     >
                         <option value="">Chọn loại sự kiện</option>
@@ -474,7 +476,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                     <select
                         className={cx('select')}
                         name="eventLocation"
-                        value={formData.eventLocation.locationId}
+                        value={formData?.eventLocation?.locationId}
                         onChange={handleChange}
                     >
                         <option value="">Chọn địa điểm</option>

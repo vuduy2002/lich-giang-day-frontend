@@ -10,6 +10,7 @@ import Menu from '../../../Components/Menu';
 
 import { SIDE_MENU_ITEMS_ADMIN } from '../../../listMenuOfPages/admin';
 import { SIDE_MENU_ITEMS_LECTURER } from '../../../listMenuOfPages/lecturer';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(Style);
 
@@ -50,16 +51,12 @@ function Header() {
                     </Menu>
                 </div>
             ) : (
-                <div className={cx('logo-school')}>
-                    <img src={logo} alt="logo-school" />
-                </div>
+                <Link to={'/homeAdmin'}>
+                    <div className={cx('logo-school')}>
+                        <img src={logo} alt="logo-school" />
+                    </div>
+                </Link>
             )}
-
-            {/* 
-            <div>
-                <Search />
-            </div> */}
-
             <AccountHeader />
         </div>
     );

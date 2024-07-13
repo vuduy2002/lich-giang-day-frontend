@@ -66,7 +66,7 @@ const CalendarComponent = ({ events, curUser }) => {
                 className={cx('calendar')}
                 onChange={onChange}
                 value={date}
-                tileDisabled={({ date }) => date < currentDay}
+                //tileDisabled={({ date }) => date < currentDay}
                 tileContent={tileContent}
                 onClickDay={handleDayClick}
             />

@@ -7,6 +7,10 @@ export const getEvents = async () => {
     return await axios.get(API_URL, { headers: authHeader() });
 };
 
+export const getEventById = async (id) => {
+    return await axios.get(`${API_URL}/${id}`, { headers: authHeader() });
+};
+
 export const createEvent = async (event) => {
     return await axios.post(API_URL, event, { headers: authHeader() });
 };
