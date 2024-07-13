@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import style from './formShowEvent.module.scss';
 import Button from '../../Button';
+import {convertFromYYYYMMDD} from '../../formatDate'
 import { getAttendanceReportById, updateAttendanceReport } from '../../../services/attendanceService';
 
 const cx = classNames.bind(style);
@@ -72,7 +73,7 @@ const FormShowEvent = ({ event, curUser, onClose }) => {
                 <h3 className={cx('head-title')}>{event.eventName.toUpperCase()}</h3>
                 <p>{event.eventDescription}</p>
                 <p className={cx('row-title')}>
-                    <span className={cx('title')}>Ngày:</span> <span className={cx('text')}>{event.date}</span>
+                    <span className={cx('title')}>Ngày:</span> <span className={cx('text')}>{convertFromYYYYMMDD(event.date)}</span>
                 </p>
                 <p className={cx('row-title')}>
                     <span className={cx('title')}>Thời gian:</span>{' '}

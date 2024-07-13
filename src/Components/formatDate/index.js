@@ -11,28 +11,20 @@ export const  convertToDDMMYYYY= (date) => {
   }
 
   // Hàm chuyển từ mm/dd/yyyy sang dd/mm/yyyy
-export const  convertFromYYYYMMDD = (date) => {
-  const [year, month, day] = date.split('-');
-  return `${day}/${month}/${year}`;
-}
+  export const convertFromYYYYMMDD = (date) => {
+    if (!date || typeof date !== 'string') {
+      return ''; // hoặc giá trị mặc định phù hợp với trường hợp của bạn
+    }
+  
+    const parts = date.split('-');
+    if (parts.length !== 3) {
+      return ''; // hoặc giá trị mặc định khác tùy thuộc vào yêu cầu của bạn
+    }
+  
+    const [year, month, day] = parts;
+    return `${day}/${month}/${year}`;
+  };
+  
 
-export const convertToYYYYMMDD = (dateString) => {
-  if (!dateString || typeof dateString !== 'string') {
-    return ''; // Return empty string or handle error as needed
-  }
-
-  const parts = dateString.split('/');
-  if (parts.length !== 3) {
-    return ''; // Return empty string or handle error as needed
-  }
-
-  const [day, month, year] = parts;
-  if (isNaN(day) || isNaN(month) || isNaN(year)) {
-    return ''; // Return empty string or handle error as needed
-  }
-
-  // Assuming day, month, year are valid numbers, format them into YYYY-MM-DD
-  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-};
 
 

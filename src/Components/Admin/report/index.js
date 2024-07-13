@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import Button from '../../Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { convertFromYYYYMMDD } from '../../formatDate';
 
 const ShowReport = () => {
   const [eventDetails, setEventDetails] = useState(null);
@@ -51,7 +52,7 @@ const ShowReport = () => {
           <strong>Mô tả:</strong> {eventDetails.eventDescription}
         </Typography>
         <Typography variant='h5' sx={{ marginTop: 2 }}>
-          <strong>Ngày:</strong> {new Date(eventDetails.date).toLocaleDateString()}
+          <strong>Ngày:</strong> {convertFromYYYYMMDD(eventDetails.date)}
         </Typography>
         <Typography variant='h5' sx={{ marginTop: 2 }}>
           <strong>Thời gian:</strong> {eventDetails.timeStart} - {eventDetails.timeEnd}

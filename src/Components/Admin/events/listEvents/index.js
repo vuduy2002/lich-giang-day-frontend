@@ -8,6 +8,7 @@ import { faPen, faTrash, faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import EventForm from '../eventForm';
 import {convertFromYYYYMMDD} from '../../../formatDate'
 import { Link } from 'react-router-dom';
+import InputDate from '../../inputDate';
 
 const cx = classNames.bind(style);
 
@@ -45,6 +46,15 @@ const ListEventsAdmin = () => {
         setCurrentEvent(event);
     };
 
+    //check search: enddate < startdate
+    if(startDate.date || endDate.date){
+        console.log('hehe')
+        if(new Date(startDate.date) > new Date(endDate.date) ){
+            alert('ngày kết thúc không được lớn hơn ngày bắt đầu')
+            setEndDate(startDate);
+        }
+    }
+
     const filteredEvents = events.filter((event) => {
         const name = event.eventName?.toLowerCase() || '';
         const description = event.eventDescription?.toLowerCase() || '';
@@ -61,8 +71,8 @@ const ListEventsAdmin = () => {
         const query = inputValue.toLowerCase();
 
         const eventDate = new Date(event.date);
-        const validStartDate = startDate ? new Date(startDate) : null;
-        const validEndDate = endDate ? new Date(endDate) : null;
+        const validStartDate = startDate ? new Date(startDate.date) : null;
+        const validEndDate = endDate ? new Date(endDate.date) : null;
 
         const isAfterStartDate = !validStartDate || eventDate >= validStartDate;
         const isBeforeEndDate = !validEndDate || eventDate <= validEndDate;
@@ -88,6 +98,7 @@ const ListEventsAdmin = () => {
         return new Date(eventDate) < currentDate;
     };
 
+
     return checkUpdate ? (
         <EventForm title={'Cập nhật Sự kiện'} onBack={setCheckUpdate}>
             {currentEvent}
@@ -105,22 +116,24 @@ const ListEventsAdmin = () => {
                     onChange={(e) => setInputValue(e.target.value)}
                 ></input>
 
-                <div>
-                    <span>Từ: 
-                    <input
-                        type="date"
+                <div className={cx('box-date-input')}>
+                    <p>
+                        Từ: 
+                    </p>
+                    <InputDate 
+                        dateValue={startDate.date}
                         className={cx('date-input')}
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                    /></span>
+                        setFormData={setStartDate}
+                    />
+                    <p>
+                        đến: 
+                    </p>
+                    <InputDate 
+                        dateValue={endDate.date}
+                        className={cx('date-input')}
+                        setFormData={setEndDate}
+                    />
 
-                    <span>đến: 
-                    <input
-                        type="date"
-                        className={cx('date-input')}
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
-                    /></span>
                 </div>
             </div>
 
@@ -142,7 +155,7 @@ const ListEventsAdmin = () => {
                         </tr>
                     </thead>
                     <tbody className={cx('tbody')}>
-                        {filteredEvents &&
+                        {filteredEvents.length>0 ?
                             filteredEvents.map((event, index) => (
                                 <tr key={index}>
                                     <td>{event.eventId}</td>
@@ -179,7 +192,7 @@ const ListEventsAdmin = () => {
                                         )}
                                     </td>
                                 </tr>
-                            ))}
+                            )) : <tr><td>Không có kết quả phù hợp....</td></tr>}
                     </tbody>
                 </table>
             </div>

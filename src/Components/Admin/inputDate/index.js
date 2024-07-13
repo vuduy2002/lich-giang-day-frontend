@@ -1,43 +1,65 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { convertFromYYYYMMDD, convertToYYYYMMDD } from '../../formatDate'; // Ensure you have conversion functions
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css'; // optional for styling
+import classNames from 'classnames/bind';
+import styles from './inputDate.module.scss';
+import { convertFromYYYYMMDD } from '../../formatDate';
 
-const InputDate = ({ dateValue, handleChange }) => {
+const cx = classNames.bind(styles);
+
+const InputDate = ({ dateValue, className, setFormData }) => {
+  const [date, setDate] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
 
-  const toggleCalendar = () => {
-    setShowCalendar(!showCalendar);
-  };
+  useEffect(() => {
+    setDate(dateValue);
+  }, [dateValue]);
 
   const handleDateChange = (newDate) => {
-    const formattedDate = convertToYYYYMMDD(newDate); // Convert date format as needed
-    handleChange(formattedDate);
+    setFormData((prev) => ({
+      ...prev,
+      date: `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`,
+    }));
     setShowCalendar(false);
   };
 
+  const handleInputClick = () => {
+    setShowCalendar((prev) => !prev);
+  };
+  console.log(date)
+
   return (
-    <div className="show-date">
-      <label htmlFor="dateInput">Chọn ngày:</label>
-      <div className="date-input-container">
-        <input
-          type="text"
-          name="date"
-          placeholder="ngày / tháng / năm"
-          value={convertFromYYYYMMDD(dateValue)}
-          readOnly
-          className="display-date"
-          onClick={toggleCalendar}
-        />
-        <span className="date-icon" onClick={toggleCalendar}>
-          <i className="fas fa-calendar-alt"></i>
-        </span>
-        {showCalendar && (
-          <div className="calendar-container">
-            <Calendar onChange={handleDateChange} value={new Date(dateValue)} />
+    <div className={cx('showDate')}>
+      <Tippy
+        interactive={true}
+        visible={showCalendar}
+        placement="bottom-start"
+        onClickOutside={() => setShowCalendar(false)}
+        offset={[0, 0]} // Adjust this to change the vertical position
+        arrow={false} // Hide the arrow
+        content={
+          <div className={cx('calendarContainer')}>
+            <Calendar
+              onChange={handleDateChange}
+              value={dateValue ? new Date(dateValue) : new Date()}
+            />
           </div>
-        )}
-      </div>
+        }
+      >
+        <div className={cx('dateInputContainer')}>
+          <input
+            type="text"
+            name="date"
+            placeholder="ngày / tháng / năm"
+            value={date ? convertFromYYYYMMDD(date) : ''}
+            readOnly
+            className={className}
+            onClick={handleInputClick}
+          />
+        </div>
+      </Tippy>
     </div>
   );
 };

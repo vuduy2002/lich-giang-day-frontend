@@ -21,14 +21,19 @@
     border-radius: 999px;
     min-width: 5rem;
     height: 3rem;
-    padding: 0 1rem;
+    padding: 0.4rem;
     margin: 0 1rem 1rem 0;
     box-shadow: 5px 5px 5px #b2b1b1;
     
 }
+
+.box-date-input{
+    display: inline-flex;
+}
+
 .date-input {
-    width: 12rem; /* Adjust width as needed */
-    padding: 8px;
+    width: 14rem; /* Adjust width as needed */
+    padding: 4px;
     margin-right: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;

@@ -15,6 +15,7 @@ import {
 } from '../../../../services/eventService';
 import { createAttendanceReport, updateAttendanceReport } from '../../../../services/attendanceService';
 import Search from '../../events/searchLecturer';
+import InputDate from '../../inputDate';
 
 const cx = classNames.bind(style);
 
@@ -31,7 +32,6 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
         host: [],
         participants: [],
     });
-   
 
     const [users, setUsers] = useState([]);
     const [eventTypes, setEventTypes] = useState([]);
@@ -41,7 +41,6 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
     const [availableTimes, setAvailableTimes] = useState([]);
     const [host, setHost] = useState([]);
     const [members, setMembers] = useState([]);
-
     const inputRef = useRef();
 
     // Featch data
@@ -114,7 +113,8 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                 ...formData,
                 [name]: updatedArray,
             });
-        } else {
+        }
+        else {
             setFormData({
                 ...formData,
                 [name]: value,
@@ -416,17 +416,13 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
 
                 <label className={cx('label')}>
                     Ngày:
-                    <input
+                    <InputDate 
+                        dateValue={formData.date}
                         className={cx('input')}
-                        type="date"
-                        name="date"
-                        value={formData.date}
-                        onChange={handleChange}
+                        setFormData={setFormData}
                     />
-                    {errors.date && (
-                        <span className={cx('error')}>{errors.date}</span>
-                    )}
                 </label>
+
                 {availableTimes.length > 0 && (
                     <label>
                         Các khung giờ đã có lịch:{' '}
