@@ -3,11 +3,11 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faNotesMedical } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faClock} from '@fortawesome/free-solid-svg-icons';
 
 import style from './Calender.module.scss';
-import FormShowEvent from '../Lecturer/formShowEvent';
-import Popper from '../Popper/Popper';
+import FormShowEvent from '../../Lecturer/formShowEvent';
+import Popper from '../../Popper/Popper';
 
 const cx = classNames.bind(style);
 
@@ -31,7 +31,7 @@ const CalendarComponent = ({ events, curUser }) => {
             return dayHasEvents ? (
                 <div>
                     <FontAwesomeIcon
-                        icon={faNotesMedical}
+                        icon={faBell}
                         style={{ color: 'red' }}
                     />
                 </div>
@@ -58,7 +58,7 @@ const CalendarComponent = ({ events, curUser }) => {
         setSelectedEvent(null);
     };
 
-    const currentDay = new Date();
+    // const currentDay = new Date();
     
     return (
         <div className={cx('wrapper')}>
@@ -80,10 +80,9 @@ const CalendarComponent = ({ events, curUser }) => {
                                 className={cx('event-detail')}
                                 onClick={() => handleEventClick(event)}
                             >
-                                <h3>{event.eventName}</h3>
-                                <p>
-                                    {event.timeStart} - {event.timeEnd}
-                                </p>
+                                <h3 style={{color: ""}}>{event.eventName}</h3>       
+                                    <FontAwesomeIcon icon={faClock} style={{color: "gray"}}/>
+                                    {` ${event.timeStart} - ${event.timeEnd}`}                             
                             </div>
                         ))}
                     </div>

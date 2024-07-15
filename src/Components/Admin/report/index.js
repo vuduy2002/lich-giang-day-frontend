@@ -3,7 +3,6 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { getEventById } from '../../../services/eventService';
 import { getAttendanceReportById } from '../../../services/attendanceService';
 import { useLocation } from 'react-router-dom';
-import Button from '../../Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { convertFromYYYYMMDD } from '../../formatDate';
@@ -30,6 +29,11 @@ const ShowReport = () => {
     return <div>Loading...</div>;
   }
 
+  const renderHosts = (arr)=>{
+    return arr.map((item, index) =>  `${item.lecturerName} (${item.lecturerId}),  ` );
+  }
+
+  //reder sự tham gia
   const renderAttendanceStatus = (confirm) => {
     if (confirm === 'chưa phản hồi!') return 'Chưa phản hồi!';
     return confirm ? 'Có' : 'Không';
@@ -37,7 +41,7 @@ const ShowReport = () => {
 
   return (
     <Box sx={{ padding: 4 }}>
-      <Button onClick={() => window.history.back()}><FontAwesomeIcon icon={faChevronLeft}/>Quay lại</Button> 
+      <div style={{cursor:'pointer'}} onClick={() => window.history.back()}><FontAwesomeIcon icon={faChevronLeft}/>Quay lại</div> 
       <Box>
         <Typography variant="h3" gutterBottom sx={{ marginTop: 3 }}>
           Event Report
@@ -58,13 +62,13 @@ const ShowReport = () => {
           <strong>Thời gian:</strong> {eventDetails.timeStart} - {eventDetails.timeEnd}
         </Typography>
         <Typography variant='h5' sx={{ marginTop: 2 }}>
-          <strong>Địa điểm:</strong> {eventDetails.eventLocation.locationName}
+          <strong>Địa điểm:</strong> {eventDetails.eventLocation?.locationName || <span style={{color: 'red'}}>'Dữ liệu đã bị chỉnh sửa hoặc xóa!'</span>}
         </Typography>
         <Typography variant='h5' sx={{ marginTop: 2 }}>
-          <strong>Loại sự kiện:</strong> {eventDetails.eventType.typeName}
+          <strong>Loại sự kiện:</strong> {eventDetails.eventType?.typeName || <span style={{color: 'red'}}>'Dữ liệu đã bị chỉnh sửa hoặc xóa!'</span>}
         </Typography>
         <Typography variant='h5' sx={{ marginTop: 2 }}>
-          <strong>Người chủ trì:</strong> {eventDetails.host[0].lecturerName}
+          <strong>Người chủ trì:</strong> {renderHosts(eventDetails.host)}
         </Typography>
         <Typography variant="h5" sx={{ marginTop: 2, marginBottom: 2 }}>
           <strong>Thành viên:</strong>

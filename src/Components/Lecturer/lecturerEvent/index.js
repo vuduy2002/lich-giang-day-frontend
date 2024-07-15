@@ -1,6 +1,6 @@
 // LecturerEvent.jsx
 import React, { useEffect, useState } from 'react';
-import CalendarComponent from '../../Calender';
+import CalendarComponent from '../Calender';
 import { getEvents } from '../../../services/eventService';
 
 function LecturerEvent() {

@@ -11,11 +11,13 @@
     align-items: center;
 
     .content {
+        overflow-y: scroll;
         background-color: white;
         padding: 20px;
         border-radius: 8px;
         width: 100rem;
         max-width: 90%;
+        max-height: 80vh;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     .head-title {
@@ -34,6 +36,24 @@
     }
     .text{
         flex: 5;
+    }
+
+    .participant-table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #f2f2f2;
+            color: black;
+        }
     }
 
     .form-group {

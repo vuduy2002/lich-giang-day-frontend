@@ -1,7 +1,6 @@
 import classNames from 'classnames/bind';
 import style from './Search.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+
 import { memo, useRef, useState } from 'react';
 import Tippy from '@tippyjs/react/headless';
 import Popper from '../../../Popper';
@@ -15,16 +14,8 @@ function Search({ arrData, formData, name, handleChange }) {
 
     const [showlist, setShowlist] = useState(false);
 
-    //delete icon
-    let iconDelete = false;
-    if (inputValue.trim().length > 0) {
-        iconDelete = true;
-    }
-    const handleDelete = () => {
-        setInputValue('');
-        refInput.current.focus();
-    };
 
+   
     //Filter
     const resultData = arrData.filter((item) => {
         return item.lecturerName
@@ -70,13 +61,7 @@ function Search({ arrData, formData, name, handleChange }) {
                     }}
                     onFocus={() => setShowlist(true)}
                 ></input>
-                {iconDelete && (
-                    <FontAwesomeIcon
-                        className={cx('delete')}
-                        icon={faXmark}
-                        onClick={handleDelete}
-                    />
-                )}
+                
             </div>
         </Tippy>
     );

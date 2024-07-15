@@ -4,17 +4,19 @@ import { getEvents, deleteEvent } from '../../../../services/eventService';
 import { deleteAttendanceReport } from '../../../../services/attendanceService';
 import style from './listEvents.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faTrash, faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faTrash, faFileAlt, faBomb } from '@fortawesome/free-solid-svg-icons';
 import EventForm from '../eventForm';
 import {convertFromYYYYMMDD} from '../../../formatDate'
 import { Link } from 'react-router-dom';
 import InputDate from '../../inputDate';
+import FormShowEvent from '../../../Lecturer/formShowEvent';
 
 const cx = classNames.bind(style);
 
 const ListEventsAdmin = () => {
     const [events, setEvents] = useState([]);
     const [checkUpdate, setCheckUpdate] = useState(false);
+    const [detailEvent, setDetailEvent] = useState()
     const [currentEvent, setCurrentEvent] = useState({});
     const [inputValue, setInputValue] = useState('');
     const [startDate, setStartDate] = useState('');
@@ -57,17 +59,17 @@ const ListEventsAdmin = () => {
 
     const filteredEvents = events.filter((event) => {
         const name = event.eventName?.toLowerCase() || '';
-        const description = event.eventDescription?.toLowerCase() || '';
-        const host = Array.isArray(event.host)
-            ? event.host
-                  .map((host) => host.lecturerName.toLowerCase())
-                  .join(' ')
-            : '';
-        const participants = Array.isArray(event.participants)
-            ? event.participants
-                  .map((participant) => participant.lecturerName.toLowerCase())
-                  .join(' ')
-            : '';
+        // const description = event.eventDescription?.toLowerCase() || '';
+        // const host = Array.isArray(event.host)
+        //     ? event.host
+        //           .map((host) => host.lecturerName.toLowerCase())
+        //           .join(' ')
+        //     : '';
+        // const participants = Array.isArray(event.participants)
+        //     ? event.participants
+        //           .map((participant) => participant.lecturerName.toLowerCase())
+        //           .join(' ')
+        //     : '';
         const query = inputValue.toLowerCase();
 
         const eventDate = new Date(event.date);
@@ -78,124 +80,134 @@ const ListEventsAdmin = () => {
         const isBeforeEndDate = !validEndDate || eventDate <= validEndDate;
 
         return (
-            (name.includes(query) ||
-            description.includes(query) ||
-            host.includes(query) ||
-            participants.includes(query)) &&
+            (name.includes(query))
+            // || description.includes(query) )
+            // ||
+            // host.includes(query) ||
+            // participants.includes(query))
+             &&
             isAfterStartDate &&
             isBeforeEndDate
         );
     });
 
-    const renderName = (arr) => {
-        return arr.map((item, index) => {
-            return ` ${item.lecturerName},`;
-        });
-    };
+    // const renderName = (arr) => {
+    //     return arr.map((item, index) => {
+    //         return ` ${item.lecturerName},`;
+    //     });
+    // };
 
     const isPastEvent = (eventDate) => {
         const currentDate = new Date();
         return new Date(eventDate) < currentDate;
     };
 
+    // show details of the event
+    const showForm = (event)=>{
+        setDetailEvent(event)
+    }
+console.log(detailEvent)
 
     return checkUpdate ? (
         <EventForm title={'Cập nhật Sự kiện'} onBack={setCheckUpdate}>
             {currentEvent}
         </EventForm>
     ) : (
-        <div className={cx('container')}>
-            <h1 className={cx('title')}>Danh Sách Sự Kiện</h1>
-
-            <div className={cx('box-search')}>
-                <input
-                    type="text"
-                    placeholder="Tìm kiếm Sự kiện..."
-                    className={cx('inputSearch')}
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                ></input>
-
-                <div className={cx('box-date-input')}>
-                    <p>
-                        Từ: 
-                    </p>
-                    <InputDate 
-                        dateValue={startDate.date}
-                        className={cx('date-input')}
-                        setFormData={setStartDate}
-                    />
-                    <p>
-                        đến: 
-                    </p>
-                    <InputDate 
-                        dateValue={endDate.date}
-                        className={cx('date-input')}
-                        setFormData={setEndDate}
-                    />
-
+        <div>
+            <div className={cx('container')}>
+                <h1 className={cx('title')}>Danh Sách Sự Kiện</h1>
+    
+                <div className={cx('box-search')}>
+                    <input
+                        type="text"
+                        placeholder="Tìm kiếm Sự kiện..."
+                        className={cx('input')}
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                    ></input>
+    
+                    <div className={cx('box-date-input')}>
+                        <p>
+                            Từ: 
+                        </p>
+                        <InputDate 
+                            dateValue={startDate.date}
+                            className={cx('input')}
+                            setFormData={setStartDate}
+                        />
+                        <p>
+                            đến: 
+                        </p>
+                        <InputDate 
+                            dateValue={endDate.date}
+                            className={cx('input')}
+                            setFormData={setEndDate}
+                        />
+    
+                    </div>
+                </div>
+    
+                <div className={cx('boxTable')}>
+                    <table className={cx('table')}>
+                        <thead className={cx('thead')}>
+                            <tr>
+                                <th>Id</th>
+                                <th>Tên sự kiện</th>
+                                {/* <th>Mô tả</th> */}
+                                <th>Ngày</th>
+                                <th>Thời gian bắt đầu</th>
+                                <th>Thời gian kết thúc</th>
+                                <th>Địa điểm</th>
+                                {/* <th>Loại sự kiện</th>
+                                <th>Người chủ trì</th>
+                                <th>Thành viên tham gia</th> */}
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody className={cx('tbody')}>
+                            {filteredEvents.length>0 ?
+                                filteredEvents.map((event, index) => (
+                                    <tr key={index}  onClick={()=>showForm(event)}>
+                                        <td>{event.eventId}</td>
+                                        <td>{event.eventName}</td>
+                                        {/* <td>{event.eventDescription}</td> */}
+                                        <td>{convertFromYYYYMMDD(event.date)}</td>
+                                        <td>{event.timeStart}</td>
+                                        <td>{event.timeEnd}</td>
+                                        <td>{event.eventLocation?.locationName || <FontAwesomeIcon icon={faBomb} style={{color: 'red'}}/>}</td>
+                                        {/* <td>{event.eventType?.typeName || 'Dữ liệu đã bị chỉnh sửa hoặc xóa!'}</td>
+                                        <td>{renderName(event.host)}</td>
+                                        <td>{renderName(event.participants)}</td> */}
+                                        <td>
+                                            {isPastEvent(event.date) ? (
+                                               <Link to='/report' state={event.eventId}>
+                                                    <FontAwesomeIcon
+                                                        icon={faFileAlt}
+                                                        className={cx('icon', 'report-icon')}
+                                                    />
+                                               </Link>
+                                            ) : (
+                                                <>
+                                                    <FontAwesomeIcon
+                                                        icon={faPen}
+                                                        onClick={() => handleEdit(event)}
+                                                        className={cx('icon', 'edit-icon')}
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        icon={faTrash}
+                                                        onClick={() => handleDelete(event)}
+                                                        className={cx('icon', 'delete-icon')}
+                                                    />
+                                                </>
+                                            )}
+                                        </td>
+                                    </tr>
+                                )) : <tr><td colSpan={11} style={{textAlign: 'center'}}>Không có kết quả phù hợp....</td></tr>}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-
-            <div className={cx('boxTable')}>
-                <table className={cx('table')}>
-                    <thead className={cx('thead')}>
-                        <tr>
-                            <th>Id</th>
-                            <th>Tên sự kiện</th>
-                            <th>Mô tả</th>
-                            <th>Ngày</th>
-                            <th>Thời gian bắt đầu</th>
-                            <th>Thời gian kết thúc</th>
-                            <th>Địa điểm</th>
-                            <th>Loại sự kiện</th>
-                            <th>Người chủ trì</th>
-                            <th>Thành viên tham gia</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody className={cx('tbody')}>
-                        {filteredEvents.length>0 ?
-                            filteredEvents.map((event, index) => (
-                                <tr key={index}>
-                                    <td>{event.eventId}</td>
-                                    <td>{event.eventName}</td>
-                                    <td>{event.eventDescription}</td>
-                                    <td>{convertFromYYYYMMDD(event.date)}</td>
-                                    <td>{event.timeStart}</td>
-                                    <td>{event.timeEnd}</td>
-                                    <td>{event.eventLocation?.locationName || 'Dữ liệu đã bị chỉnh sửa hoặc xóa!'}</td>
-                                    <td>{event.eventType?.typeName || 'Dữ liệu đã bị chỉnh sửa hoặc xóa!'}</td>
-                                    <td>{renderName(event.host)}</td>
-                                    <td>{renderName(event.participants)}</td>
-                                    <td>
-                                        {isPastEvent(event.date) ? (
-                                           <Link to='/report' state={event.eventId}>
-                                                <FontAwesomeIcon
-                                                    icon={faFileAlt}
-                                                    className={cx('icon', 'report-icon')}
-                                                />
-                                           </Link>
-                                        ) : (
-                                            <>
-                                                <FontAwesomeIcon
-                                                    icon={faPen}
-                                                    onClick={() => handleEdit(event)}
-                                                    className={cx('icon', 'edit-icon')}
-                                                />
-                                                <FontAwesomeIcon
-                                                    icon={faTrash}
-                                                    onClick={() => handleDelete(event)}
-                                                    className={cx('icon', 'delete-icon')}
-                                                />
-                                            </>
-                                        )}
-                                    </td>
-                                </tr>
-                            )) : <tr><td>Không có kết quả phù hợp....</td></tr>}
-                    </tbody>
-                </table>
-            </div>
+            {detailEvent && <FormShowEvent onlyShow event={detailEvent} onClose={()=>setDetailEvent(null)} />}
         </div>
     );
 };

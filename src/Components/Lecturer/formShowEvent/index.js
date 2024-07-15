@@ -7,7 +7,7 @@ import { getAttendanceReportById, updateAttendanceReport } from '../../../servic
 
 const cx = classNames.bind(style);
 
-const FormShowEvent = ({ event, curUser, onClose }) => {
+const FormShowEvent = ({ event={}, curUser={}, onlyShow=false, onClose=()=>{} }) => {
     const [attending, setAttending] = useState({});
     const [obConfirm, setObConfirm] = useState({
         lecturerId: '',
@@ -15,21 +15,22 @@ const FormShowEvent = ({ event, curUser, onClose }) => {
         reason: ''
     });
 
+    // chỉ gọi api khi cần comfirm ,onlyShow ko cần
     useEffect(() => {
-        const fetchData = async () => {
+        if(!onlyShow){const fetchData = async () => {
             const response = await getAttendanceReportById(event.eventId);
             const { __v, _id, ...rest } = response.data;
             setAttending(rest);
         };
-        fetchData();
-    }, [event.eventId]);
+        fetchData();}
+    }, [event.eventId, onlyShow]);
 
     useEffect(() => {
-        if (attending.lecturers) {
+        if (!onlyShow && attending.lecturers) {
             const atdOfCur = attending.lecturers.find((item) => item.lecturerId === curUser);
             setObConfirm(atdOfCur || { lecturerId: curUser, confirm: 'chưa phản hồi', reason: '' });
         }
-    }, [attending, curUser]);
+    }, [attending, curUser, onlyShow]);
 
     const handleAttendingChange = (e) => {
         const { name, value } = e.target;
@@ -73,6 +74,12 @@ const FormShowEvent = ({ event, curUser, onClose }) => {
                 <h3 className={cx('head-title')}>{event.eventName.toUpperCase()}</h3>
                 <p>{event.eventDescription}</p>
                 <p className={cx('row-title')}>
+                    <span className={cx('title')}>Id:</span> <span className={cx('text')}>{event.eventId}</span>
+                </p>
+                <p className={cx('row-title')}>
+                    <span className={cx('title')}>Loại sự kiện:</span> <span className={cx('text')}>{event.eventType?.typeName || <span style={{color: 'red'}}>'Dữ liệu đã bị chỉnh sửa hoặc xóa!'</span>}</span>
+                </p>
+                <p className={cx('row-title')}>
                     <span className={cx('title')}>Ngày:</span> <span className={cx('text')}>{convertFromYYYYMMDD(event.date)}</span>
                 </p>
                 <p className={cx('row-title')}>
@@ -82,20 +89,35 @@ const FormShowEvent = ({ event, curUser, onClose }) => {
                     </span>
                 </p>
                 <p className={cx('row-title')}>
-                    <span className={cx('title')}>Địa điểm:</span> <span className={cx('text')}>{event.eventLocation.locationName}</span>
+                    <span className={cx('title')}>Địa điểm:</span> <span className={cx('text')}>{event.eventLocation?.locationName || <span style={{color: 'red'}}>'Dữ liệu đã bị chỉnh sửa hoặc xóa!'</span>}</span>
                 </p>
                 <p className={cx('row-title')}>
                     <span className={cx('title')}>Người chủ trì:</span>{' '}
                     <span className={cx('text')}>{event.host.map((host) => host.lecturerName).join(', ')}</span>
                 </p>
                 <p className={cx('row-title')}>
-                    <span className={cx('title')}>Thành viên: </span>
-                    <span className={cx('text')}>
-                        {event.participants.map((participant) => participant.lecturerName).join(', ')}
-                    </span>
+                    <span className={cx('title')}>Thành viên:</span>
                 </p>
+                <table className={cx('participant-table')}>
+                    <thead>
+                        <tr>
+                            <th>Lecturer ID</th>
+                            {/* <th>Position</th> */}
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {event.participants.map((participant) => (
+                            <tr key={participant.lecturerId}>
+                                <td>{participant.lecturerId}</td>
+                                {/* <td>{participant.position}</td> */}
+                                <td>{participant.lecturerName}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
 
-                <form onSubmit={handleSubmit}>
+                {!onlyShow &&<form onSubmit={handleSubmit}>
                     <div className={cx('form-group')}>
                         <label className={cx('title')}>Bạn sẽ tham gia chứ?</label>
                         <input
@@ -129,7 +151,7 @@ const FormShowEvent = ({ event, curUser, onClose }) => {
                     <Button size="S" primary type="submit">
                         Submit
                     </Button>
-                </form>
+                </form>}
                 <Button size="S" outline onClick={onClose}>
                     Back
                 </Button>
