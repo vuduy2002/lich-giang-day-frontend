@@ -120,7 +120,7 @@ console.log(detailEvent)
                 <div className={cx('box-search')}>
                     <input
                         type="text"
-                        placeholder="Tìm kiếm Sự kiện..."
+                        placeholder="Nhập tên sự kiện..."
                         className={cx('input')}
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
