@@ -7,6 +7,10 @@ export const getLecturers = async () => {
     return await axios.get(API_URL, { headers: authHeader() });
 };
 
+export const getLecturerById = async (id) => {
+    return await axios.get(`${API_URL}/${id}`, { headers: authHeader() });
+};
+
 export const createLecturer = async (Lecturer) => {
     return await axios.post(API_URL, Lecturer, { headers: authHeader() });
 };

@@ -22,14 +22,12 @@ const Login = () => {
                 window.location.href = routes.lecturerCalender;
             }
         } catch (error) {
-            if (error.message === 'Invalid userId') {
-                setErrorMessage('ID nhập không đúng.');
-            } else if (error.message === 'Invalid password') {
+            if (error.message === 'Invalid password') {
                 setErrorMessage('Mật khẩu không đúng.');
             } else if (error.message === 'Password too short') {
                 setErrorMessage('Mật khẩu phải có ít nhất 6 ký tự.');
             } else {
-                setErrorMessage('Đã xảy ra lỗi. Vui lòng thử lại.');
+                setErrorMessage('Không tìm thấy ID.');
             }
         }
     };

@@ -7,27 +7,24 @@ export const login = async (userId, password) => {
         throw new Error('Password too short');
     }
 
-    const response = await axios.get(API_URL);
-    const users = response.data;
+    const response = await axios.get(`${API_URL}/${userId}`);
 
-    const user = users.find(user => user.lecturerId === userId);
-
-    if (!user) {
+    if (!response.data) {
         throw new Error('Invalid userId');
     }
+
+    const user = response.data;
 
     if (user.password !== password) {
         throw new Error('Invalid password');
     }
 
-    const userDataWithoutPass = (ob) => {
-        const { _id, password, lecturerId, ...rest } = ob;
-        return rest;
-    };
-    const userInfor = userDataWithoutPass(user);
+    console.log(user)
 
+    const { password: _, _id, __v, lecturerId, ...userInfor } = user;
     const tokenID = btoa(`${user.lecturerId}`);
-    const roleUser = user.isAdmin === true ? 'admin' : 'lecturer';
+    const roleUser = user.isAdmin ? 'admin' : 'lecturer';
+
     localStorage.setItem(
         'user',
         JSON.stringify({ tokenID, dataUser: userInfor, role: roleUser }),
