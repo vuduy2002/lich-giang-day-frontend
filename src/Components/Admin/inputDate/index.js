@@ -18,9 +18,12 @@ const InputDate = ({ dateValue, className, setFormData }) => {
   }, [dateValue]);
 
   const handleDateChange = (newDate) => {
+    const formattedMonth = newDate.getMonth() + 1 < 10 ? `0${newDate.getMonth() + 1}` : newDate.getMonth() + 1;
+    const formattedDate = newDate.getDate() < 10 ? `0${newDate.getDate()}` : newDate.getDate();
+    
     setFormData((prev) => ({
       ...prev,
-      date: `${newDate.getFullYear()}-${newDate.getMonth() + 1}-${newDate.getDate()}`,
+      date: `${newDate.getFullYear()}-${formattedMonth}-${formattedDate}`,
     }));
     setShowCalendar(false);
   };
