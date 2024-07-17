@@ -9,28 +9,6 @@
     color: #333;
 }
 
-//search
-.box-search{       
-    display: flex;
-    flex-wrap: wrap;
- 
-}
-
-// .inputSearch {
-//     border: 1px solid #333;
-//     border-radius: 999px;
-//     min-width: 5rem;
-//     height: 3rem;
-//     padding: 0.4rem;
-//     margin: 0 1rem 1rem 0;
-//     box-shadow: 5px 5px 5px #b2b1b1;
-    
-// }
-
-.box-date-input{
-    display: inline-flex;
-}
-
 .input {
     width: 14rem; /* Adjust width as needed */
     padding: 4px;
@@ -40,9 +18,23 @@
     font-size: 14px;
 }
 
+
+//search
+.box-search{       
+    display: flex;
+    flex-wrap: wrap;
+    .input{
+        margin-bottom: 1rem;
+    }
+}
+
+.box-date-input{
+    display: inline-flex;
+}
+
+
 .boxTable {
     width: 100%;
-    margin-top: 1rem;
     overflow-x: scroll;
 }
 

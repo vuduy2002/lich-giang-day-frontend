@@ -2,6 +2,7 @@ import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
 import { getEvents, deleteEvent } from '../../../../services/eventService';
 import { deleteAttendanceReport } from '../../../../services/attendanceService';
+import { getEventTypes } from '../../../../services/eventTypeService';
 import style from './listEvents.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash, faFileAlt, faBomb } from '@fortawesome/free-solid-svg-icons';
@@ -15,8 +16,10 @@ const cx = classNames.bind(style);
 
 const ListEventsAdmin = () => {
     const [events, setEvents] = useState([]);
+    const [eventTypes, setEventTypes] = useState([]);
+    const [choseEventType, setChoseEventType] = useState('');
     const [checkUpdate, setCheckUpdate] = useState(false);
-    const [detailEvent, setDetailEvent] = useState()
+    const [detailEvent, setDetailEvent] = useState();
     const [currentEvent, setCurrentEvent] = useState({});
     const [inputValue, setInputValue] = useState('');
     const [startDate, setStartDate] = useState('');
@@ -24,12 +27,15 @@ const ListEventsAdmin = () => {
 
     useEffect(() => {
         const fetchEvents = async () => {
-            const response = await getEvents();
-            setEvents(response.data);
+            const response1 = await getEvents();
+            setEvents(response1.data);
+            const response2 = await getEventTypes();
+            setEventTypes(response2.data);
         };
         fetchEvents();
     }, [checkUpdate]);
 
+    //icon delete
     const handleDelete = async (event) => {
         if (
             window.confirm(
@@ -43,35 +49,25 @@ const ListEventsAdmin = () => {
         }
     };
 
+    // icon update
     const handleEdit = (event) => {
         setCheckUpdate(true);
         setCurrentEvent(event);
     };
 
     //check search: enddate < startdate
-    if(startDate.date || endDate.date){
-        console.log('hehe')
-        if(new Date(startDate.date) > new Date(endDate.date) ){
-            alert('ngày kết thúc không được lớn hơn ngày bắt đầu')
+    if (startDate.date || endDate.date) {
+        if (new Date(startDate.date) > new Date(endDate.date)) {
+            alert('ngày kết thúc không được lớn hơn ngày bắt đầu');
             setEndDate(startDate);
         }
     }
 
+    // lọc events
     const filteredEvents = events.filter((event) => {
         const name = event.eventName?.toLowerCase() || '';
-        // const description = event.eventDescription?.toLowerCase() || '';
-        // const host = Array.isArray(event.host)
-        //     ? event.host
-        //           .map((host) => host.lecturerName.toLowerCase())
-        //           .join(' ')
-        //     : '';
-        // const participants = Array.isArray(event.participants)
-        //     ? event.participants
-        //           .map((participant) => participant.lecturerName.toLowerCase())
-        //           .join(' ')
-        //     : '';
+        const type = event?.eventType?.typeId;
         const query = inputValue.toLowerCase();
-
         const eventDate = new Date(event.date);
         const validStartDate = startDate ? new Date(startDate.date) : null;
         const validEndDate = endDate ? new Date(endDate.date) : null;
@@ -80,33 +76,23 @@ const ListEventsAdmin = () => {
         const isBeforeEndDate = !validEndDate || eventDate <= validEndDate;
 
         return (
-            (name.includes(query))
-            // || description.includes(query) )
-            // ||
-            // host.includes(query) ||
-            // participants.includes(query))
-             &&
+            name.includes(query) &&
+            (choseEventType === '' || type === choseEventType) &&
             isAfterStartDate &&
             isBeforeEndDate
         );
     });
 
-    // const renderName = (arr) => {
-    //     return arr.map((item, index) => {
-    //         return ` ${item.lecturerName},`;
-    //     });
-    // };
-
+    // check date to show report
     const isPastEvent = (eventDate) => {
         const currentDate = new Date();
         return new Date(eventDate) < currentDate;
     };
 
     // show details of the event
-    const showForm = (event)=>{
-        setDetailEvent(event)
-    }
-console.log(detailEvent)
+    const showForm = (event) => {
+        setDetailEvent(event);
+    };
 
     return checkUpdate ? (
         <EventForm title={'Cập nhật Sự kiện'} onBack={setCheckUpdate}>
@@ -125,6 +111,20 @@ console.log(detailEvent)
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                     ></input>
+
+                    <select
+                        className={cx('input')}
+                        name="eventType"
+                        value={choseEventType}
+                        onChange={(e) => setChoseEventType(e.target.value)}
+                    >
+                        <option value="">Chọn loại sự kiện</option>
+                        {eventTypes.map((type) => (
+                            <option key={type.typeId} value={type.typeId}>
+                                {type.typeName}
+                            </option>
+                        ))}
+                    </select>
     
                     <div className={cx('box-date-input')}>
                         <p>
@@ -152,32 +152,26 @@ console.log(detailEvent)
                         <thead className={cx('thead')}>
                             <tr>
                                 <th>Id</th>
+                                <th>Loại sự kiện</th>
                                 <th>Tên sự kiện</th>
-                                {/* <th>Mô tả</th> */}
                                 <th>Ngày</th>
                                 <th>Thời gian bắt đầu</th>
                                 <th>Thời gian kết thúc</th>
                                 <th>Địa điểm</th>
-                                {/* <th>Loại sự kiện</th>
-                                <th>Người chủ trì</th>
-                                <th>Thành viên tham gia</th> */}
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody className={cx('tbody')}>
-                            {filteredEvents.length>0 ?
+                            {filteredEvents.length > 0 ? (
                                 filteredEvents.map((event, index) => (
-                                    <tr key={index}  onClick={()=>showForm(event)}>
+                                    <tr key={index} onClick={() => showForm(event)}>
                                         <td>{event.eventId}</td>
-                                        <td>{event.eventName}</td>
-                                        {/* <td>{event.eventDescription}</td> */}
+                                        <td>{event.eventType?.typeName || <FontAwesomeIcon icon={faBomb} style={{color: 'red'}}/>}</td>
+                                        <td>{event.eventName}</td>                         
                                         <td>{convertFromYYYYMMDD(event.date)}</td>
                                         <td>{event.timeStart}</td>
                                         <td>{event.timeEnd}</td>
-                                        <td>{event.eventLocation?.locationName || <FontAwesomeIcon icon={faBomb} style={{color: 'red'}}/>}</td>
-                                        {/* <td>{event.eventType?.typeName || 'Dữ liệu đã bị chỉnh sửa hoặc xóa!'}</td>
-                                        <td>{renderName(event.host)}</td>
-                                        <td>{renderName(event.participants)}</td> */}
+                                        <td>{event.eventLocation?.locationName || <FontAwesomeIcon icon={faBomb} style={{color: 'red'}}/>}</td>                                     
                                         <td>
                                             {isPastEvent(event.date) ? (
                                                <Link to='/report' state={event.eventId}>
@@ -202,12 +196,15 @@ console.log(detailEvent)
                                             )}
                                         </td>
                                     </tr>
-                                )) : <tr><td colSpan={11} style={{textAlign: 'center'}}>Không có kết quả phù hợp....</td></tr>}
+                                ))
+                            ) : (
+                                <tr><td colSpan={11} style={{textAlign: 'center'}}>Không có kết quả phù hợp...</td></tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
             </div>
-            {detailEvent && <FormShowEvent onlyShow event={detailEvent} onClose={()=>setDetailEvent(null)} />}
+            {detailEvent && <FormShowEvent onlyShow event={detailEvent} onClose={() => setDetailEvent(null)} />}
         </div>
     );
 };
