@@ -3,6 +3,7 @@ const routes = {
     homeAdmin: '/homeAdmin',
 
     login: '/login',
+    resetpass: '/resetpass',
     profile: '/profile',
 
     //admin

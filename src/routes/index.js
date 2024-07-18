@@ -3,6 +3,7 @@ import routes from './confix/Routes';
 
 import HomePage from '../Pages/Home';
 import Login from '../Components/login';
+import PasswordReset from '../Components/resetpass';
 import profilePage from '../Pages/profilePage';
 
 import HomeAdminPage from '../Pages/adminPage/homeAdmin';
@@ -23,7 +24,8 @@ import LecturerCalender from '../Pages/lecturerPage/lecturerCalender';
 const publicPages = [
     { path: routes.home, component: HomePage, layout: null },
     { path: routes.login, component: Login, layout: null },
-
+    { path: routes.resetpass, component: PasswordReset, layout: null },
+    
     //admin pages
     { path: routes.homeAdmin, roles: 'admin', component: HomeAdminPage, layout: null },
     { path: routes.createEvents, roles: 'admin', component: CreateEvents },

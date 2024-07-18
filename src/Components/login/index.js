@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import routes from '../../routes/confix/Routes';
 import style from './Login.module.scss';
 import Button from '../../Components/Button';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(style);
 
@@ -70,6 +71,7 @@ const Login = () => {
                 {errorMessage && (
                     <div className={cx('error-message')}>{errorMessage}</div>
                 )}
+                <Link to={routes.resetpass}><p style={{marginTop: '20px'}}>Quên mật khẩu - Đổi mật khẩu?</p></Link>
             </div>
         </div>
     );
