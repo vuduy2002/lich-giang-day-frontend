@@ -41,7 +41,7 @@ function HomeAdmin() {
                     <p>Email: {lecturer.email}</p>
                     <div>
                         <Button outline onClick={()=>logout()}  className={cx('btt-logout')}>
-                            Logout
+                            Đăng Xuất
                         </Button>
                     </div>
                 </div>
@@ -50,17 +50,15 @@ function HomeAdmin() {
             
                 <div className={cx('box-butt')}>
                     <Menu items={HOME_SYSTEM_MENU_ITEMS_ADMIN}>
-                        <div>
+                        <div style={{marginRight:'10px'}}>
                             <Button primary className={cx('btt')}>
                                 Quản Lý Hệ Thống
                             </Button>
                         </div>
                     </Menu>
-                   
-                            <Button primary to={routes.listEvents} className={cx('btt')}>
-                                Quản Lý Sự Kiện
-                            </Button>          
-                   
+                        <Button primary to={routes.listEvents} className={cx('btt')}>
+                            Quản Lý Sự Kiện
+                        </Button>          
                 </div>
             </div>
         </div>

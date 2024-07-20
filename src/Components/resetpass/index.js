@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './resetPass.module.scss';
 import Button from '../Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {postEmail, postCodeVerify, postUpdatePass} from '../../services/resetPass'
 import { ClipLoader } from 'react-spinners'; // Import spinner
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
 
 const PasswordReset = () => {
@@ -92,7 +94,8 @@ const PasswordReset = () => {
                         <ClipLoader size={50} color={"#123abc"} loading={loading} />
                     </div>
                 ) : (
-                    <>
+                    <div> 
+                        <FontAwesomeIcon icon={faChevronLeft} onClick={()=>window.history.back()}/>
                         {step === 1 && (
                             <div className={cx('form-input')}>
                                 <h2>Nhập email của bạn</h2>
@@ -139,7 +142,7 @@ const PasswordReset = () => {
                                 </Button>
                             </div>
                         )}
-                    </>
+                    </div>
                 )}
                 {error && <div className={cx('error')}>{error}</div>}
             </div>

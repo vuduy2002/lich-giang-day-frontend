@@ -46,3 +46,10 @@
     color: red;
     margin-top: 10px;
 }
+
+.resetPass{
+    margin-top: 2rem;
+    &:hover{
+        color: #838282;
+    }
+}

@@ -478,6 +478,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                             dateValue={formData.date}
                             className={cx('input')}
                             setFormData={setFormData}
+                            offset={[0,-20]}
                         />
                    </div>
                      {!checForcus.divDate && errors.date && (

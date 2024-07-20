@@ -9,7 +9,7 @@ import { convertFromYYYYMMDD } from '../../formatDate';
 
 const cx = classNames.bind(styles);
 
-const InputDate = ({ dateValue, className, setFormData }) => {
+const InputDate = ({ dateValue, className, setFormData, offset }) => {
   const [date, setDate] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
 
@@ -40,7 +40,7 @@ const InputDate = ({ dateValue, className, setFormData }) => {
         visible={showCalendar}
         placement="bottom-start"
         onClickOutside={() => setShowCalendar(false)}
-        offset={[0, 0]} // Adjust this to change the vertical position
+        offset={offset} // Adjust this to change the vertical position
         arrow={false} // Hide the arrow
         content={
           <div className={cx('calendarContainer')}>

@@ -65,6 +65,7 @@ const ListEventsAdmin = () => {
 
     // lọc events
     const filteredEvents = events.filter((event) => {
+        const id = event.eventId?.toLowerCase() || '';
         const name = event.eventName?.toLowerCase() || '';
         const type = event?.eventType?.typeId;
         const query = inputValue.toLowerCase();
@@ -76,7 +77,8 @@ const ListEventsAdmin = () => {
         const isBeforeEndDate = !validEndDate || eventDate <= validEndDate;
 
         return (
-            name.includes(query) &&
+            (id.includes(query) ||
+            name.includes(query)) &&
             (choseEventType === '' || type === choseEventType) &&
             isAfterStartDate &&
             isBeforeEndDate
@@ -134,6 +136,7 @@ const ListEventsAdmin = () => {
                             dateValue={startDate.date}
                             className={cx('input')}
                             setFormData={setStartDate}
+                            offset={[0,0]}
                         />
                         <p>
                             đến: 
@@ -142,6 +145,8 @@ const ListEventsAdmin = () => {
                             dateValue={endDate.date}
                             className={cx('input')}
                             setFormData={setEndDate}
+                            offset={[-180,0]}
+
                         />
     
                     </div>
