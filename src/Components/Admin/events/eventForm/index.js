@@ -504,9 +504,9 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                     <label >
                         <p style={{color:'red'}}>Các khung giờ đã có lịch:</p>{' '}
                         <ul className={cx('duplicateTime')}>
-                            {availableTimes.map((time) => {
+                            {availableTimes.map((time, index) => {
                                 return (
-                                    <li key={time.timeStart}>
+                                    <li key={index}>
                                         {time.timeStart} - {time.timeEnd}
                                     </li>
                                 );
