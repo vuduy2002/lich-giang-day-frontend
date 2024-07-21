@@ -205,7 +205,6 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                 lecturerIds.add(item.lecturerId);
                 uniqueLecturers.push({
                     lecturerId: item.lecturerId,
-                    lecturerName: item.lecturerName,
                     confirm: 'chưa phản hồi!',
                     reason: ''
                 });
