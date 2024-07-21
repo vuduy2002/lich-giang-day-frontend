@@ -93,7 +93,7 @@ const FormShowEvent = ({ event={}, curUser={}, onlyShow=false, onClose=()=>{} })
                 </p>
                 <p className={cx('row-title')}>
                     <span className={cx('title')}>Người chủ trì:</span>{' '}
-                    <span className={cx('text')}>{event.host.map((host) => host.lecturerName).join(', ')}</span>
+                    <span className={cx('text')}>{event.host.map((host) => `${host.lecturerName}(${host.lecturerId})`).join(', ')}</span>
                 </p>
                 <p className={cx('row-title')}>
                     <span className={cx('title')}>Thành viên:</span>

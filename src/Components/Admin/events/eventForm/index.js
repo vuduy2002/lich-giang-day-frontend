@@ -166,7 +166,6 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
         if (formData.participants.length === 0)
             newErrors.participants =
                 'Vui lòng chọn ít nhất một thành viên tham gia';
-       
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -211,7 +210,6 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                 });
             }
         });
-
         return uniqueLecturers;
     };
 
@@ -329,7 +327,6 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
         }
 }
 
-   console.log(formData)
     return (
         <div className={cx('container')}>
             {onBack && (

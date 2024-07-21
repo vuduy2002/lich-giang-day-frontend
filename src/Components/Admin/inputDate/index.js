@@ -31,7 +31,6 @@ const InputDate = ({ dateValue, className, setFormData, offset }) => {
   const handleInputClick = () => {
     setShowCalendar((prev) => !prev);
   };
-  console.log(date)
 
   return (
     <div className={cx('showDate')}>
@@ -45,8 +44,9 @@ const InputDate = ({ dateValue, className, setFormData, offset }) => {
         content={
           <div className={cx('calendarContainer')}>
             <Calendar
-              onChange={handleDateChange}
+              tileDisabled={({ date }) => date < new Date()}
               value={dateValue ? new Date(dateValue) : new Date()}
+              onChange={handleDateChange}
             />
           </div>
         }

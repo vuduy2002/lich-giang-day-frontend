@@ -1,6 +1,7 @@
 import {
     faCalendarDay,
     faCalendarPlus,
+    faHome,
     faKeyboard,
     faLocationDot,
     faRectangleList,
@@ -31,14 +32,14 @@ export const HOME_SYSTEM_MENU_ITEMS_ADMIN = [
         title: 'QL Lớp học',
        // to: routes.managermentLecturers,
     },
-    // {
-    //     icon: <FontAwesomeIcon icon={faFlag}></FontAwesomeIcon>,
-    //     title: 'Báo cáo',
-    //     to: routes.report,
-    // },
 ];
 
 export const SIDE_MENU_ITEMS_ADMIN = [
+    {
+        icon: <FontAwesomeIcon icon={faHome}></FontAwesomeIcon>,
+        title: 'Trang chủ',
+        to: routes.homeAdmin,
+    },
     {
         icon: <FontAwesomeIcon icon={faCalendarDay}></FontAwesomeIcon>,
         title: 'Danh sách sự kiện',

@@ -5,12 +5,13 @@ import { deleteAttendanceReport } from '../../../../services/attendanceService';
 import { getEventTypes } from '../../../../services/eventTypeService';
 import style from './listEvents.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faTrash, faFileAlt, faBomb } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faTrash, faFileAlt, faBomb, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import EventForm from '../eventForm';
 import {convertFromYYYYMMDD} from '../../../formatDate'
 import { Link } from 'react-router-dom';
 import InputDate from '../../inputDate';
 import FormShowEvent from '../../../Lecturer/formShowEvent';
+import Button from '../../../Button';
 
 const cx = classNames.bind(style);
 
@@ -103,6 +104,7 @@ const ListEventsAdmin = () => {
     ) : (
         <div>
             <div className={cx('container')}>
+                <Button outline size="S" onClick={() => window.history.back()}><FontAwesomeIcon icon={faChevronLeft}/>Quay lại</Button>
                 <h1 className={cx('title')}>Danh Sách Sự Kiện</h1>
     
                 <div className={cx('box-search')}>
@@ -146,9 +148,7 @@ const ListEventsAdmin = () => {
                             className={cx('input')}
                             setFormData={setEndDate}
                             offset={[-180,0]}
-
                         />
-    
                     </div>
                 </div>
     
@@ -168,8 +168,8 @@ const ListEventsAdmin = () => {
                         </thead>
                         <tbody className={cx('tbody')}>
                             {filteredEvents.length > 0 ? (
-                                filteredEvents.map((event, index) => (
-                                    <tr key={index} onClick={() => showForm(event)}>
+                                filteredEvents.map((event) => (
+                                    <tr key={event.eventId} onClick={() => showForm(event)}>
                                         <td>{event.eventId}</td>
                                         <td>{event.eventType?.typeName || <FontAwesomeIcon icon={faBomb} style={{color: 'red'}}/>}</td>
                                         <td>{event.eventName}</td>                         

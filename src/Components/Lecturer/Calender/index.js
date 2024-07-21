@@ -57,8 +57,6 @@ const CalendarComponent = ({ events, curUser }) => {
         // setShow(false);
         setSelectedEvent(null);
     };
-
-    // const currentDay = new Date();
     
     return (
         <div className={cx('wrapper')}>
@@ -66,11 +64,10 @@ const CalendarComponent = ({ events, curUser }) => {
                 className={cx('calendar')}
                 onChange={onChange}
                 value={date}
-                //tileDisabled={({ date }) => date < currentDay}
+                tileDisabled={({ date }) => date < new Date()}
                 tileContent={tileContent}
                 onClickDay={handleDayClick}
             />
-
             {show && dayEvents.length > 0 && (
                 <Popper bold>
                     <div className={cx('events-wrapper')}>

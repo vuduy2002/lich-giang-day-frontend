@@ -26,9 +26,8 @@ const ListLecturersAdmin = () => {
 
     useEffect(() => {
         const lecturerList = lecturers.filter((lecturer) =>
-            lecturer.lecturerName
-                .toLowerCase()
-                .includes(inputValue.toLowerCase()),
+            lecturer.lecturerName?.toLowerCase().includes(inputValue.toLowerCase()) ||
+            lecturer.lecturerId?.toLowerCase().includes(inputValue.toLowerCase()),
         );
         setSearchValue(lecturerList);
     }, [inputValue, lecturers]);
@@ -62,6 +61,7 @@ const ListLecturersAdmin = () => {
         <div className={cx('container')}>
             <Button
                 outline
+                size="S"
                 leftIcon={<FontAwesomeIcon icon={faChevronLeft} />}
                 onClick={() => {
                    window.history.back();
@@ -103,7 +103,8 @@ const ListLecturersAdmin = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {searchValue.map((lecturer) => (
+                        {searchValue.length>0 ?(  
+                            searchValue.map((lecturer) => (
                             <tr key={lecturer.lecturerId}>
                                 <td>{lecturer.lecturerId}</td>
                                 <td>{lecturer.isAdmin ? 'Yes' : 'No'}</td>
@@ -134,7 +135,9 @@ const ListLecturersAdmin = () => {
                                     />
                                 </td>
                             </tr>
-                        ))}
+                        ))):(
+                            <tr><td colSpan={11} style={{textAlign: 'center'}}>Không có kết quả phù hợp...</td></tr>
+                        )}
                     </tbody>
                 </table>
             </div>

@@ -40,23 +40,23 @@ function HomeAdmin() {
                     <p>Điện thoại: {lecturer.lecturerPhone}</p>
                     <p>Email: {lecturer.email}</p>
                     <div>
-                        <Button outline onClick={()=>logout()}  className={cx('btt-logout')}>
+                        <Button outline size='S' onClick={()=>logout()}  className={cx('btt-logout')}>
                             Đăng Xuất
                         </Button>
                     </div>
-                </div>
-               
+                </div> 
             </div>
             
                 <div className={cx('box-butt')}>
                     <Menu items={HOME_SYSTEM_MENU_ITEMS_ADMIN}>
                         <div style={{marginRight:'10px'}}>
-                            <Button primary className={cx('btt')}>
+                            <Button primary size='L' className={cx('btt')}>
                                 Quản Lý Hệ Thống
                             </Button>
                         </div>
                     </Menu>
-                        <Button primary to={routes.listEvents} className={cx('btt')}>
+                    
+                        <Button primary size='L' to={routes.listEvents} className={cx('btt')}>
                             Quản Lý Sự Kiện
                         </Button>          
                 </div>

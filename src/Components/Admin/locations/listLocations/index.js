@@ -27,7 +27,8 @@ const ListLocations = () => {
 
     useEffect(() => {
         const locationList = locations.filter((location) =>
-            location.locationName.toLowerCase().includes(inputValue.toLowerCase())
+            location.locationName?.toLowerCase().includes(inputValue.toLowerCase())||
+            location.locationId?.toLowerCase().includes(inputValue.toLowerCase())
         );
         setSearchValue(locationList);
     }, [inputValue, locations]);
@@ -58,6 +59,7 @@ const ListLocations = () => {
             <Button
                 outline
                 leftIcon={<FontAwesomeIcon icon={faChevronLeft} />}
+                size="S"
                 onClick={() => {
                     window.history.back();
                 }}
@@ -92,24 +94,27 @@ const ListLocations = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {searchValue.map((location) => (
-                            <tr key={location.locationId}>
-                                <td>{location.locationId}</td>
-                                <td>{location.locationName}</td>
-                                <td className={cx('actions')}>
-                                    <FontAwesomeIcon
-                                        icon={faPen}
-                                        onClick={() => handleEdit(location)}
-                                        className={cx('icon', 'edit-icon')}
-                                    />
-                                    <FontAwesomeIcon
-                                        icon={faTrash}
-                                        onClick={() => handleDelete(location)}
-                                        className={cx('icon', 'delete-icon')}
-                                    />
-                                </td>
-                            </tr>
-                        ))}
+                        {searchValue.length >0 ?(
+                            searchValue.map((location) => (
+                                <tr key={location.locationId}>
+                                    <td>{location.locationId}</td>
+                                    <td>{location.locationName}</td>
+                                    <td className={cx('actions')}>
+                                        <FontAwesomeIcon
+                                            icon={faPen}
+                                            onClick={() => handleEdit(location)}
+                                            className={cx('icon', 'edit-icon')}
+                                        />
+                                        <FontAwesomeIcon
+                                            icon={faTrash}
+                                            onClick={() => handleDelete(location)}
+                                            className={cx('icon', 'delete-icon')}
+                                        />
+                                    </td>
+                                </tr>
+                            ))): (
+                                <tr><td colSpan={11} style={{textAlign: 'center'}}>Không có kết quả phù hợp...</td></tr>
+                            )}
                     </tbody>
                 </table>
             </div>

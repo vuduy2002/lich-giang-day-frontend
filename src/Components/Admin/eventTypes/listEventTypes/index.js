@@ -26,7 +26,8 @@ const ListEventTypes = () => {
 
     useEffect(() => {
         const eventTypeList = eventTypes.filter((eventType) =>
-            eventType.typeName.toLowerCase().includes(inputValue.toLowerCase())
+            eventType.typeName?.toLowerCase().includes(inputValue.toLowerCase())||
+            eventType.typeId?.toLowerCase().includes(inputValue.toLowerCase())
         );
         setSearchValue(eventTypeList);
     }, [inputValue, eventTypes]);
@@ -57,6 +58,7 @@ const ListEventTypes = () => {
             <Button
                 outline
                 leftIcon={<FontAwesomeIcon icon={faChevronLeft} />}
+                size="S"
                 onClick={() => {
                     window.history.back();
                 }}
@@ -91,7 +93,8 @@ const ListEventTypes = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {searchValue.map((eventType) => (
+                        {searchValue.length > 0 ? (
+                            searchValue.map((eventType) => (
                             <tr key={eventType.typeId}>
                                 <td>{eventType.typeId}</td>
                                 <td>{eventType.typeName}</td>
@@ -108,7 +111,9 @@ const ListEventTypes = () => {
                                     />
                                 </td>
                             </tr>
-                        ))}
+                        ))):(
+                            <tr><td colSpan={11} style={{textAlign: 'center'}}>Không có kết quả phù hợp...</td></tr>
+                        )}
                     </tbody>
                 </table>
             </div>
