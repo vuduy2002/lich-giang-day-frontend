@@ -120,6 +120,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
         const { name, value, type, checked } = e.target;
         const user = users.find((user) => user.lecturerId === value);
 
+        // check chọn thành viên
         if (type === 'checkbox') {
             const updatedArray = checked
                 ? [
@@ -277,8 +278,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                     eventLocation: '',
                     eventType: '',
                     host: [],
-                    participants: [],
-                    
+                    participants: [],     
                 });
 
                 setErrors({});
@@ -298,7 +298,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
         setMembers(formData.participants.map((user) => user.lecturerName));
     }, [formData.participants]);
 
-    // Create eventId
+    // Create rendom eventId
     const generateNewEventId = () => {
         let newId = '';
         let arrId = events.map(event => event.eventId);
@@ -316,13 +316,29 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
             setChecForcus((pre)=>({...pre, [name]:true}));
         },
         whenBlur : (e) => {
-            const {name}= e.target
+            const {name,type, value}= e.target
             setChecForcus((pre)=>({...pre, [name]:false}));
             if(Object.keys(errors).length>0){
                 validateForm()
             }
             if(name === 'timeEnd'){
                 alerConflicTime()
+            }
+            
+              //check ko chọn ngày giờ quá khứ
+            if(type === 'time'){  
+                if (formData.date === new Date().toISOString().split('T')[0]) {
+                    const currentTime = new Date().toTimeString().split(' ')[0].slice(0, 5); // Lấy thời gian hiện tại trong định dạng 24 giờ, chỉ lấy phần giờ và phút
+ 
+                    if (value < currentTime) {
+                        alert('Thời gian không được nhỏ hơn thời gian hiện tại');
+                        setFormData({
+                            ...formData,
+                            [name]: '',
+                        });
+                        return;
+                    }
+                }
             }
         }
 }
@@ -476,6 +492,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                             className={cx('input')}
                             setFormData={setFormData}
                             offset={[0,-20]}
+                            tileDisabled
                         />
                    </div>
                      {!checForcus.divDate && errors.date && (

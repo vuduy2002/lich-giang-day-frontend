@@ -9,7 +9,7 @@ import { convertFromYYYYMMDD } from '../../formatDate';
 
 const cx = classNames.bind(styles);
 
-const InputDate = ({ dateValue, className, setFormData, offset }) => {
+const InputDate = ({ dateValue, className, setFormData, offset=[], tileDisabled=false }) => {
   const [date, setDate] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
 
@@ -32,6 +32,10 @@ const InputDate = ({ dateValue, className, setFormData, offset }) => {
     setShowCalendar((prev) => !prev);
   };
 
+  // get current date to chekc disable or not
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+
   return (
     <div className={cx('showDate')}>
       <Tippy
@@ -44,7 +48,11 @@ const InputDate = ({ dateValue, className, setFormData, offset }) => {
         content={
           <div className={cx('calendarContainer')}>
             <Calendar
-              tileDisabled={({ date }) => date < new Date()}
+              tileDisabled={tileDisabled ? ({ date }) => {
+                const calendarDate = new Date(date);
+                calendarDate.setHours(0, 0, 0, 0);
+                return calendarDate < currentDate;
+              } : false}
               value={dateValue ? new Date(dateValue) : new Date()}
               onChange={handleDateChange}
             />

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import style from './formShowEvent.module.scss';
 import Button from '../../Button';
-import {convertFromYYYYMMDD} from '../../formatDate'
+import { convertFromYYYYMMDD } from '../../formatDate';
 import { getAttendanceReportById, updateAttendanceReport } from '../../../services/attendanceService';
 
 const cx = classNames.bind(style);
 
-const FormShowEvent = ({ event={}, curUser={}, onlyShow=false, onClose=()=>{} }) => {
+const FormShowEvent = ({ event = {}, curUser = {}, onlyShow = false, onClose = () => {} }) => {
     const [attending, setAttending] = useState({});
     const [obConfirm, setObConfirm] = useState({
         lecturerId: '',
@@ -17,12 +17,14 @@ const FormShowEvent = ({ event={}, curUser={}, onlyShow=false, onClose=()=>{} })
 
     // chỉ gọi api khi cần comfirm ,onlyShow ko cần
     useEffect(() => {
-        if(!onlyShow){const fetchData = async () => {
-            const response = await getAttendanceReportById(event.eventId);
-            const { __v, _id, ...rest } = response.data;
-            setAttending(rest);
-        };
-        fetchData();}
+        if (!onlyShow) {
+            const fetchData = async () => {
+                const response = await getAttendanceReportById(event.eventId);
+                const { __v, _id, ...rest } = response.data;
+                setAttending(rest);
+            };
+            fetchData();
+        }
     }, [event.eventId, onlyShow]);
 
     useEffect(() => {
@@ -54,7 +56,7 @@ const FormShowEvent = ({ event={}, curUser={}, onlyShow=false, onClose=()=>{} })
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Không thay đổi `reason` nếu `confirm` không phải `true`
+         // Không thay đổi `reason` nếu `confirm` không phải `true`
         const updatedObConfirm = obConfirm.confirm === true ? { ...obConfirm, reason: '' } : obConfirm;
 
         const updatedLecturers = attending.lecturers.map((lecturer) =>
@@ -67,6 +69,10 @@ const FormShowEvent = ({ event={}, curUser={}, onlyShow=false, onClose=()=>{} })
 
         onClose();
     };
+
+    // check thời gian để hiện submit và checkbõ
+    const eventDateTime = new Date(`${event.date}T${event.timeStart}`);
+    const isEventInPast = eventDateTime < new Date();
 
     return (
         <div className={cx('form-show-event')}>
@@ -102,7 +108,6 @@ const FormShowEvent = ({ event={}, curUser={}, onlyShow=false, onClose=()=>{} })
                     <thead>
                         <tr>
                             <th>Lecturer ID</th>
-                            {/* <th>Position</th> */}
                             <th>Name</th>
                         </tr>
                     </thead>
@@ -110,14 +115,13 @@ const FormShowEvent = ({ event={}, curUser={}, onlyShow=false, onClose=()=>{} })
                         {event.participants.map((participant) => (
                             <tr key={participant.lecturerId}>
                                 <td>{participant.lecturerId}</td>
-                                {/* <td>{participant.position}</td> */}
                                 <td>{participant.lecturerName}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
 
-                {!onlyShow &&<form onSubmit={handleSubmit}>
+                {!onlyShow && <form onSubmit={handleSubmit}>
                     <div className={cx('form-group')}>
                         <label className={cx('title')}>Bạn sẽ tham gia chứ?</label>
                         <input
@@ -126,6 +130,7 @@ const FormShowEvent = ({ event={}, curUser={}, onlyShow=false, onClose=()=>{} })
                             value="true"
                             checked={obConfirm.confirm === true}
                             onChange={handleAttendingChange}
+                            disabled={isEventInPast}
                         />{' '}
                         Yes
                         <input
@@ -134,6 +139,7 @@ const FormShowEvent = ({ event={}, curUser={}, onlyShow=false, onClose=()=>{} })
                             value="false"
                             checked={obConfirm.confirm === false}
                             onChange={handleAttendingChange}
+                            disabled={isEventInPast}
                         />{' '}
                         No
                     </div>
@@ -145,12 +151,13 @@ const FormShowEvent = ({ event={}, curUser={}, onlyShow=false, onClose=()=>{} })
                                 value={obConfirm.reason}
                                 onChange={handleReasonChange}
                                 required={obConfirm.confirm === false}
+                                disabled={isEventInPast}
                             ></textarea>
                         </div>
                     )}
-                    <Button size="S" primary type="submit">
+                    {!isEventInPast && <Button size="S" primary type="submit" >
                         Submit
-                    </Button>
+                    </Button>}
                 </form>}
                 <Button size="S" outline onClick={onClose}>
                     Back
