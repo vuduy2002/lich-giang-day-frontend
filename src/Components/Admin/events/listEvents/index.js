@@ -89,7 +89,7 @@ const ListEventsAdmin = () => {
     // check date to show report
     const isPastEvent = (eventDate) => {
         const currentDate = new Date();
-        return new Date(eventDate) < currentDate;
+        return new Date(eventDate) < currentDate.setHours(0,0,0,0);
     };
 
     // show details of the event

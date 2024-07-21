@@ -39,8 +39,10 @@ const LecturerForm = ({
 
     let title = children ? 'Cập nhật thông tin giảng viên' : 'Thêm mới giảng viên';
 
+    // Default prefix when component mounts
+    const defaultPrefix = 'TC';
+
     useEffect(() => {
-        const defaultPrefix = 'TC'; // Default prefix when component mounts
         const newId = generateId(defaultPrefix);
         setFormData((prev) => ({
             ...prev,
@@ -131,8 +133,9 @@ const LecturerForm = ({
     };
 
     const resetForm = () => {
+        const newId = generateId(defaultPrefix);
         setFormData({
-            lecturerId: '',
+            lecturerId: newId,
             isAdmin: false,
             position: '',
             avatar: '',
