@@ -53,6 +53,9 @@
     width: 100%;
     height: auto;
     border-radius: 50%;
+    &:hover{
+        cursor: pointer;
+    }
 }
 
 .profile-info {
@@ -61,10 +64,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    &.btt-logout{
-        max-width: 2rem !important;
-    }
-    
 }
 
 .profile-info h2 {

@@ -1,28 +1,28 @@
-
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 
 import logo from '../../../image/logo_school.png';
-
+import ShowAvatar from '../../showAvatar'
 import {logout} from '../../../services/authService'
 import Button from '../../Button';
 import Menu from '../../Menu'
 import routes from '../../../routes/confix/Routes';
 import {HOME_SYSTEM_MENU_ITEMS_ADMIN} from '../../../listMenuOfPages/admin'
 import style from './homeAdmin.module.scss'
+import { Link } from 'react-router-dom';
 const cx = classNames.bind(style);
 
 function HomeAdmin() {
 
     const [lecturer, setLecturer] = useState({});
-
+    const [showAvatar, setShowAvatar] = useState(false)
     useEffect(() => {
         const lectureCur = JSON.parse(localStorage.getItem('user'));
         setLecturer(lectureCur.dataUser);
     }, []);
    
     return (
-        <div className={cx('wrapper')}>
+        !showAvatar ? (<div className={cx('wrapper')}>
             <div className={cx('logo_school')}>
                 <img src={logo} alt="logo"></img>
             </div>
@@ -32,13 +32,18 @@ function HomeAdmin() {
                 </h1>
                 <div className={cx("profile-card")}>
                 <div className={cx("profile-image")}>
-                    <img src={lecturer.avatar} alt="avatar"></img>
+                    <img src={lecturer.avatar} alt="avatar" 
+                          onClick={()=>setShowAvatar(true)}></img>
                 </div>
                 <div className={cx("profile-info")}>
-                    <h2>{lecturer.lecturerName}</h2>
-                    <p>Chức vụ: {lecturer.position}</p>
-                    <p>Điện thoại: {lecturer.lecturerPhone}</p>
-                    <p>Email: {lecturer.email}</p>
+                   <Link to = {routes.profile}>
+                        <div className={cx('infor')}>
+                            <h2>{lecturer.lecturerName}</h2>
+                            <p>Chức vụ: {lecturer.position}</p>
+                            <p>Điện thoại: {lecturer.lecturerPhone}</p>
+                            <p>Email: {lecturer.email}</p>
+                        </div>
+                   </Link>
                     <div>
                         <Button outline size='S' onClick={()=>logout()}  className={cx('btt-logout')}>
                             Đăng Xuất
@@ -61,7 +66,7 @@ function HomeAdmin() {
                         </Button>          
                 </div>
             </div>
-        </div>
+        </div>) : <ShowAvatar avtLink={lecturer.avatar} setShow={setShowAvatar}/>
     );
 }
 

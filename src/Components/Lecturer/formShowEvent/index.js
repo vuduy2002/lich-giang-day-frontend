@@ -72,8 +72,8 @@ const FormShowEvent = ({ event = {}, curUser = {}, onlyShow = false, onClose = (
 
     // check thời gian để hiện submit và checkbõ
     const eventDateTime = new Date(`${event.date}T${event.timeStart}`);
-    // const isEventInPast = eventDateTime < new Date();
-    const isEventInPast = false;
+    const isEventInPast = eventDateTime < new Date();
+    // const isEventInPast = false;
 
 
     return (

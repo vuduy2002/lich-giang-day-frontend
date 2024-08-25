@@ -491,7 +491,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                             className={cx('input')}
                             setFormData={setFormData}
                             offset={[0,-20]}
-                            tileDisabled
+                            // tileDisabled
                         />
                    </div>
                      {!checForcus.divDate && errors.date && (
