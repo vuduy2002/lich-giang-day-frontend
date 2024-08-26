@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { authHeader } from '../utils/authUtils';
 
-const API_URL = '/eventTypes';
+const API_URL = `${process.env.REACT_APP_API}/eventTypes`;
 
 export const getEventTypes = async () => {
     return await axios.get(API_URL, { headers: authHeader() });

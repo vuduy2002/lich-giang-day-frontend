@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = '/lecturers';
+const API_URL = `${process.env.REACT_APP_API}/lecturers`;
 
 export const login = async (userId, password) => {
     if (password.length < 6) {
