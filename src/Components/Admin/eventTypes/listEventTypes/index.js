@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import styles from './listEventTypes.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { getEventTypes, deleteEventType } from '../../../../services/eventTypeService';
+import { getEventTypes, deleteEventType } from '../../../../services/Admin/eventTypeService';
 import Button from '../../../Button/Button';
 import EventTypeForm from '../eventTypeForm';
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';

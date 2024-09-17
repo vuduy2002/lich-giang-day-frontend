@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './eventTypeForm.module.scss';
-import { createEventType, updateEventType } from '../../../../services/eventTypeService';
+import { createEventType, updateEventType } from '../../../../services/Admin/eventTypeService';
 import Button from '../../../Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';

@@ -1,25 +1,29 @@
 import classNames from 'classnames/bind';
 import style from './ItemSearch.module.scss';
+import InputCheckBox from '../../../../checkBox';
 
 const cx = classNames.bind(style);
-function ItemSearch({ data, formData, handleChange, name }) {
+function ItemSearch({ data, formData, handleChange, name, disable = false }) {
     //checked input
-    const checked = formData.find((item) => {
+    const checked = formData.some((item) => {
         return item.lecturerId === data.lecturerId;
     });
 
     return (
-        <div className={cx('wrapper')}>
-            <input
-                className={cx('input')}
-                type="checkbox"
+        <div className={cx('wrapper', { disable: disable })}>
+            <InputCheckBox
                 name={name}
                 value={data.lecturerId}
-                checked={!!checked}
-                onChange={handleChange}
+                checked={checked}
+                handleChange={handleChange}
+                disable={disable}
             />
 
-            <img className={cx('avatar')} src={data.avatar} alt="avatar"></img>
+            <img
+                className={cx('avatar', { disable: disable })}
+                src={data.avatar}
+                alt="avatar"
+            ></img>
 
             <div className={cx('content')}>
                 <div className={cx('title')}>

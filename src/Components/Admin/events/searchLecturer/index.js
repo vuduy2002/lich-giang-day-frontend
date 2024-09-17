@@ -8,20 +8,21 @@ import ItemSearch from './ItemSearch';
 
 const cx = classNames.bind(style);
 
-function Search({ arrData, formData, name, handleChange }) {
+function Search({ arrData, formData, otherData, name, handleChange }) {
     const refInput = useRef();
     const [inputValue, setInputValue] = useState('');
 
     const [showlist, setShowlist] = useState(false);
 
-
-   
     //Filter
     const resultData = arrData.filter((item) => {
         return item.lecturerName
             .toLowerCase()
             .includes(inputValue.toLowerCase());
     });
+
+    const ids = otherData.map((item) => item.lecturerId);
+    // console.log(ids);
 
     return (
         <Tippy
@@ -39,6 +40,10 @@ function Search({ arrData, formData, name, handleChange }) {
                                     name={name}
                                     handleChange={handleChange}
                                     key={data1.lecturerId}
+                                    disable={
+                                        ids.length > 0 &&
+                                        ids.includes(data1.lecturerId)
+                                    }
                                 />
                             );
                         })}
@@ -61,7 +66,6 @@ function Search({ arrData, formData, name, handleChange }) {
                     }}
                     onFocus={() => setShowlist(true)}
                 ></input>
-                
             </div>
         </Tippy>
     );

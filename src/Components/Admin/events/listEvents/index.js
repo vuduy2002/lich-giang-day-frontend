@@ -1,13 +1,21 @@
 import classNames from 'classnames/bind';
 import React, { useEffect, useState } from 'react';
-import { getEvents, deleteEvent } from '../../../../services/eventService';
-import { deleteAttendanceReport } from '../../../../services/attendanceService';
-import { getEventTypes } from '../../../../services/eventTypeService';
+import {
+    getEvents,
+    deleteEvent,
+} from '../../../../services/Admin/eventService';
+import { getEventTypes } from '../../../../services/Admin/eventTypeService';
 import style from './listEvents.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faTrash, faFileAlt, faBomb, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import {
+    faPen,
+    faTrash,
+    faFileAlt,
+    faBomb,
+    faChevronLeft,
+} from '@fortawesome/free-solid-svg-icons';
 import EventForm from '../eventForm';
-import {convertFromYYYYMMDD} from '../../../formatDate'
+import { convertFromYYYYMMDD } from '../../../formatDate';
 import { Link } from 'react-router-dom';
 import InputDate from '../../inputDate';
 import FormShowEvent from '../../../Lecturer/formShowEvent';
@@ -40,11 +48,10 @@ const ListEventsAdmin = () => {
     const handleDelete = async (event) => {
         if (
             window.confirm(
-                `Bạn muốn xóa sự kiện có id : ${event.eventId} : ${event.eventName}`
+                `Bạn muốn xóa sự kiện có id : ${event.eventId} : ${event.eventName}`,
             ) === true
         ) {
             await deleteEvent(event.eventId);
-            await deleteAttendanceReport(event.eventId);
             const response = await getEvents();
             setEvents(response.data);
         }
@@ -78,8 +85,7 @@ const ListEventsAdmin = () => {
         const isBeforeEndDate = !validEndDate || eventDate <= validEndDate;
 
         return (
-            (id.includes(query) ||
-            name.includes(query)) &&
+            (id.includes(query) || name.includes(query)) &&
             (choseEventType === '' || type === choseEventType) &&
             isAfterStartDate &&
             isBeforeEndDate
@@ -89,7 +95,7 @@ const ListEventsAdmin = () => {
     // check date to show report
     const isPastEvent = (eventDate) => {
         const currentDate = new Date();
-        return new Date(eventDate) < currentDate.setHours(0,0,0,0);
+        return new Date(eventDate) < currentDate.setHours(0, 0, 0, 0);
     };
 
     // show details of the event
@@ -104,9 +110,12 @@ const ListEventsAdmin = () => {
     ) : (
         <div>
             <div className={cx('container')}>
-                <Button outline size="S" onClick={() => window.history.back()}><FontAwesomeIcon icon={faChevronLeft}/>Quay lại</Button>
+                <Button outline size="S" onClick={() => window.history.back()}>
+                    <FontAwesomeIcon icon={faChevronLeft} />
+                    Quay lại
+                </Button>
                 <h1 className={cx('title')}>Danh Sách Sự Kiện</h1>
-    
+
                 <div className={cx('box-search')}>
                     <input
                         type="text"
@@ -129,29 +138,25 @@ const ListEventsAdmin = () => {
                             </option>
                         ))}
                     </select>
-    
+
                     <div className={cx('box-date-input')}>
-                        <p>
-                            Từ: 
-                        </p>
-                        <InputDate 
+                        <p>Từ:</p>
+                        <InputDate
                             dateValue={startDate.date}
                             className={cx('input')}
-                            setFormData={setStartDate}
-                            offset={[0,0]}
+                            setFormDate={setStartDate}
+                            offset={[0, 0]}
                         />
-                        <p>
-                            đến: 
-                        </p>
-                        <InputDate 
+                        <p>đến:</p>
+                        <InputDate
                             dateValue={endDate.date}
                             className={cx('input')}
-                            setFormData={setEndDate}
-                            offset={[-180,0]}
+                            setFormDate={setEndDate}
+                            offset={[-180, 0]}
                         />
                     </div>
                 </div>
-    
+
                 <div className={cx('boxTable')}>
                     <table className={cx('table')}>
                         <thead className={cx('thead')}>
@@ -169,33 +174,69 @@ const ListEventsAdmin = () => {
                         <tbody className={cx('tbody')}>
                             {filteredEvents.length > 0 ? (
                                 filteredEvents.map((event) => (
-                                    <tr key={event.eventId} onClick={() => showForm(event)}>
+                                    <tr
+                                        key={event.eventId}
+                                        onClick={() => showForm(event)}
+                                    >
                                         <td>{event.eventId}</td>
-                                        <td>{event.eventType?.typeName || <FontAwesomeIcon icon={faBomb} style={{color: 'red'}}/>}</td>
-                                        <td>{event.eventName}</td>                         
-                                        <td>{convertFromYYYYMMDD(event.date)}</td>
+                                        <td>
+                                            {event.eventType?.typeName || (
+                                                <FontAwesomeIcon
+                                                    icon={faBomb}
+                                                    style={{ color: 'red' }}
+                                                />
+                                            )}
+                                        </td>
+                                        <td>{event.eventName}</td>
+                                        <td>
+                                            {convertFromYYYYMMDD(event.date)}
+                                        </td>
                                         <td>{event.timeStart}</td>
                                         <td>{event.timeEnd}</td>
-                                        <td>{event.eventLocation?.locationName || <FontAwesomeIcon icon={faBomb} style={{color: 'red'}}/>}</td>                                     
+                                        <td>
+                                            {event.eventLocation
+                                                ?.locationName || (
+                                                <FontAwesomeIcon
+                                                    icon={faBomb}
+                                                    style={{ color: 'red' }}
+                                                />
+                                            )}
+                                        </td>
                                         <td>
                                             {isPastEvent(event.date) ? (
-                                               <Link to='/report' state={event.eventId}>
+                                                <Link
+                                                    to="/report"
+                                                    state={event.eventId}
+                                                >
                                                     <FontAwesomeIcon
                                                         icon={faFileAlt}
-                                                        className={cx('icon', 'report-icon')}
+                                                        className={cx(
+                                                            'icon',
+                                                            'report-icon',
+                                                        )}
                                                     />
-                                               </Link>
+                                                </Link>
                                             ) : (
                                                 <>
                                                     <FontAwesomeIcon
                                                         icon={faPen}
-                                                        onClick={() => handleEdit(event)}
-                                                        className={cx('icon', 'edit-icon')}
+                                                        onClick={() =>
+                                                            handleEdit(event)
+                                                        }
+                                                        className={cx(
+                                                            'icon',
+                                                            'edit-icon',
+                                                        )}
                                                     />
                                                     <FontAwesomeIcon
                                                         icon={faTrash}
-                                                        onClick={() => handleDelete(event)}
-                                                        className={cx('icon', 'delete-icon')}
+                                                        onClick={() =>
+                                                            handleDelete(event)
+                                                        }
+                                                        className={cx(
+                                                            'icon',
+                                                            'delete-icon',
+                                                        )}
                                                     />
                                                 </>
                                             )}
@@ -203,13 +244,26 @@ const ListEventsAdmin = () => {
                                     </tr>
                                 ))
                             ) : (
-                                <tr><td colSpan={11} style={{textAlign: 'center'}}>Không có kết quả phù hợp...</td></tr>
+                                <tr>
+                                    <td
+                                        colSpan={11}
+                                        style={{ textAlign: 'center' }}
+                                    >
+                                        Không có kết quả phù hợp...
+                                    </td>
+                                </tr>
                             )}
                         </tbody>
                     </table>
                 </div>
             </div>
-            {detailEvent && <FormShowEvent onlyShow event={detailEvent} onClose={() => setDetailEvent(null)} />}
+            {detailEvent && (
+                <FormShowEvent
+                    onlyShow
+                    event={detailEvent}
+                    onClose={() => setDetailEvent(null)}
+                />
+            )}
         </div>
     );
 };

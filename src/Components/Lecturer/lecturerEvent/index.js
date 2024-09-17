@@ -1,22 +1,28 @@
 // LecturerEvent.jsx
 import React, { useEffect, useState } from 'react';
 import CalendarComponent from '../Calender';
-import { getEvents } from '../../../services/eventService';
+import { getEvents } from '../../../services/Admin/eventService';
+import { getEventsOfUSer } from '../../../services/Lecturer/privateEventService';
 
 function LecturerEvent() {
     const [events, setEvents] = useState([]);
     const [filteredEvents, setFilteredEvents] = useState([]);
+    const [privateEvents, setPrivateEvents] = useState([]);
 
     const user = JSON.parse(localStorage.getItem('user'));
     const userId = atob(user.tokenID);
 
     // Get all events
     useEffect(() => {
-        const fetchEvents = async () => {
+        (async function () {
             const response = await getEvents();
             setEvents(response.data);
-        };
-        fetchEvents();
+        })();
+
+        (async function () {
+            const events = await getEventsOfUSer(userId);
+            setPrivateEvents(events.data);
+        })();
     }, []);
 
     // Filter user's events
@@ -31,7 +37,15 @@ function LecturerEvent() {
         setFilteredEvents(eventOfUser);
     }, [events, userId]);
 
-    return <CalendarComponent curUser={userId} events={filteredEvents} />;
+    // private events
+
+    return (
+        <CalendarComponent
+            curUser={userId}
+            events={filteredEvents}
+            privateEvents={privateEvents}
+        />
+    );
 }
 
 export default LecturerEvent;

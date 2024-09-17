@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import styles from './locationForm.module.scss';
-import { createLocation, updateLocation } from '../../../../services/locationService';
+import { createLocation, updateLocation } from '../../../../services/Admin/locationService';
 import Button from '../../../Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';

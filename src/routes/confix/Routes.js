@@ -19,6 +19,8 @@ const routes = {
     //teacher
 
     lecturerCalender: '/lecturerCalender',
+    privateEvents: '/privateEvents',
+
 
     // searchEvent: '/searchEvent',
 

@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import styles from './listLocations.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { getLocations, deleteLocation } from '../../../../services/locationService';
+import { getLocations, deleteLocation } from '../../../../services/Admin/locationService';
 import Button from '../../../Button/Button';
 import LocationForm from '../locationForm';
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';

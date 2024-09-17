@@ -15,19 +15,24 @@ import ManagementLecturers from '../Pages/adminPage/managementLecturers';
 import ManagementEventTypes from '../Pages/adminPage/managementEventTypes';
 import ManagementLocations from '../Pages/adminPage/managementLocations';
 
-
 import Report from '../Pages/adminPage/report';
 
 //lecturer
 import LecturerCalender from '../Pages/lecturerPage/lecturerCalender';
+import PrivateEvent from '../Pages/lecturerPage/privateEvent';
 
 const publicPages = [
     { path: routes.home, component: HomePage, layout: null },
     { path: routes.login, component: Login, layout: null },
     { path: routes.resetpass, component: PasswordReset, layout: null },
-    
+
     //admin pages
-    { path: routes.homeAdmin, roles: 'admin', component: HomeAdminPage, layout: null },
+    {
+        path: routes.homeAdmin,
+        roles: 'admin',
+        component: HomeAdminPage,
+        layout: null,
+    },
     { path: routes.createEvents, roles: 'admin', component: CreateEvents },
     { path: routes.createSchedules, roles: 'admin', component: CreateSchedule },
     { path: routes.listEvents, roles: 'admin', component: ListEvents },
@@ -35,21 +40,21 @@ const publicPages = [
         path: routes.managermentLecturers,
         roles: 'admin',
         component: ManagementLecturers,
-        layout: HeaderOnly
+        layout: HeaderOnly,
     },
     {
         path: routes.managermentEventTypes,
         roles: 'admin',
         component: ManagementEventTypes,
-        layout: HeaderOnly
+        layout: HeaderOnly,
     },
     {
         path: routes.managementLocations,
         roles: 'admin',
         component: ManagementLocations,
-        layout: HeaderOnly
+        layout: HeaderOnly,
     },
-    { path: routes.report, roles: 'admin', component: Report },
+    { path: routes.report, component: Report, layout: null },
 
     //teacher pages
 
@@ -57,8 +62,10 @@ const publicPages = [
         path: routes.lecturerCalender,
         roles: 'lecturer',
         component: LecturerCalender,
+        layout: HeaderOnly,
     },
     { path: routes.profile, component: profilePage, layout: null },
+    { path: routes.privateEvents, component: PrivateEvent, layout: null },
 
     // { path: routes.notification, component: Notification },
     // { path: routes.report, component: Report },

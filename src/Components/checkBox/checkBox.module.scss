@@ -1,0 +1,46 @@
+input[type='checkbox'] {
+    display: none;
+}
+
+/* Tạo một hộp tùy chỉnh làm nền cho checkbox */
+.custom-checkbox {
+    width: 3rem;
+    height: 3rem;
+    margin-right: 1rem;
+    border-radius: 1000px;
+    background-color: #f0f0f0; /* Màu nền mặc định */
+    border: 2px solid #ccc;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+
+/* Thay đổi màu nền khi checkbox được chọn */
+input[type='checkbox']:checked + .custom-checkbox {
+    background-color: #5fb3e1; /* Màu nền khi được chọn */
+    border-color: #4caf50;
+}
+
+/* Dấu tích khi checkbox được chọn */
+.custom-checkbox::after {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    top: 0.5rem;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 0.3rem 0.3rem 0;
+    transform: rotate(45deg);
+    opacity: 0; /* Ẩn dấu tích */
+}
+
+/* Hiển thị dấu tích khi checkbox được chọn */
+input[type='checkbox']:checked + .custom-checkbox::after {
+    opacity: 1;
+}
+
+.disable {
+    cursor: not-allowed;
+    // background-color: #ccc;
+}

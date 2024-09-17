@@ -1,36 +1,35 @@
 import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faL } from '@fortawesome/free-solid-svg-icons';
 
 import style from './eventForm.module.scss';
 import Button from '../../../Button/Button';
-import { getLecturers } from '../../../../services/lectureService';
-import { getEventTypes } from '../../../../services/eventTypeService';
-import { getLocations } from '../../../../services/locationService';
+import { getLecturers } from '../../../../services/Admin/lectureService';
+import { getEventTypes } from '../../../../services/Admin/eventTypeService';
+import { getLocations } from '../../../../services/Admin/locationService';
 import {
     createEvent,
     updateEvent,
     getEvents,
-} from '../../../../services/eventService';
-import { createAttendanceReport, updateAttendanceReport } from '../../../../services/attendanceService';
+} from '../../../../services/Admin/eventService';
+
 import Search from '../../events/searchLecturer';
 import InputDate from '../../inputDate';
 
 const cx = classNames.bind(style);
 
 const EventForm = ({ children = false, onBack = false, title = false }) => {
-   
     const [users, setUsers] = useState([]);
     const [eventTypes, setEventTypes] = useState([]);
-    const [eventLocations, setEventLocations] = useState([])
+    const [eventLocations, setEventLocations] = useState([]);
     const [events, setEvents] = useState([]);
     const [errors, setErrors] = useState({});
     const [availableTimes, setAvailableTimes] = useState([]);
     const [host, setHost] = useState([]);
     const [members, setMembers] = useState([]);
     const inputRef = useRef();
-    
+
     const [formData, setFormData] = useState({
         eventId: '',
         eventName: '',
@@ -58,7 +57,6 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
         divParticipants: false,
     });
 
-
     // Featch data
     useEffect(() => {
         // Fetch data from API
@@ -82,15 +80,15 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
 
         fetchData();
 
-        if(!children){
-            setFormData((pre)=>({...pre, eventId : generateNewEventId() }))
+        if (!children) {
+            setFormData((pre) => ({ ...pre, eventId: generateNewEventId() }));
         }
-        
+
         // nếu update -> set data
         if (children) {
-            const {__v, _id, ...rest} = children 
-            setFormData(rest)
-        };
+            const { __v, _id, ...rest } = children;
+            setFormData(rest);
+        }
     }, [children]);
 
     // Fillter ngày dc chọn
@@ -128,6 +126,10 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                       {
                           lecturerId: user.lecturerId,
                           lecturerName: user.lecturerName,
+                          reason: '',
+                          checked: false,
+                          confirm: 'Chưa phản hồi!',
+                          isHost: name === 'host' ? true : false,
                       },
                   ] // tick chon
                 : formData[name].filter((item) => item.lecturerId !== value); // bỏ tick chọn
@@ -135,14 +137,14 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                 ...formData,
                 [name]: updatedArray,
             });
-        }
-        else {
+        } else {
             setFormData({
                 ...formData,
                 [name]: value,
             });
         }
     };
+    console.log(formData);
 
     // Validate form data
     const validateForm = () => {
@@ -173,7 +175,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
     };
 
     // check conflic time
-    const alerConflicTime = ()=>{
+    const alerConflicTime = () => {
         if (formData.date) {
             const isConflict = availableTimes.some(
                 (time) =>
@@ -184,84 +186,68 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                     (formData.timeStart <= time.timeStart &&
                         formData.timeEnd >= time.timeEnd),
             );
-            if (isConflict)
-                alert(`Lưu ý: Thời gian sự kiện bị trùng !`);
+            if (isConflict) alert(`Lưu ý: Thời gian sự kiện bị trùng !`);
         }
-    }
-
-    // obj lecture -> arr lecturerId
-    const getLecturerIds = (arr) => {
-        return arr.map((item) => {
-            return item.lecturerId;
-        });
-    };
-
-    // Transform members to unique array
-    const idToObReport = (arrOb) => {
-        const uniqueLecturers = [];
-        const lecturerIds = new Set();
-        arrOb.forEach((item) => {
-            if (!lecturerIds.has(item.lecturerId)) {
-                lecturerIds.add(item.lecturerId);
-                uniqueLecturers.push({
-                    lecturerId: item.lecturerId,
-                    confirm: 'chưa phản hồi!',
-                    reason: ''
-                });
-            }
-        });
-        return uniqueLecturers;
     };
 
     // submit
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         //format lại các trường trước khi đâyr lên data base
         let newData = {};
-        let attendanceData = {};
+
         //
         if (validateForm()) {
             if (children) {
                 newData = {
                     ...formData,
-                    eventLocation: formData.eventLocation.locationId? formData.eventLocation.locationId: formData.eventLocation,
-                    eventType: formData.eventType.typeId? formData.eventType.typeId: formData.eventType,
-                    host: getLecturerIds(formData.host),
-                    participants: getLecturerIds(formData.participants),
+                    eventLocation: formData.eventLocation.locationId
+                        ? formData.eventLocation.locationId
+                        : formData.eventLocation,
+                    eventType: formData.eventType.typeId
+                        ? formData.eventType.typeId
+                        : formData.eventType,
+                    host: [
+                        ...formData.host.map((host) => {
+                            return {
+                                ...host,
+                                reason: '',
+                                confirm: 'Chưa phản hồi!',
+                                checked: false,
+                            };
+                        }),
+                    ],
+                    participants: [
+                        ...formData.participants.map((host) => {
+                            return {
+                                ...host,
+                                reason: '',
+                                confirm: 'Chưa phản hồi!',
+                                checked: false,
+                            };
+                        }),
+                    ],
                 };
-                attendanceData = {
-                    eventId: newData.eventId,
-                    lecturers: idToObReport([...formData.host,...formData.participants])
-                }
+                console.log(newData);
+
                 // update to database
-                const handleUpdate = async () => {
+                try {
                     await updateEvent(children.eventId, newData);
-                    await updateAttendanceReport(children.eventId, attendanceData);
-                };
-                handleUpdate();
-                alert('Cập nhật thành công!');
-                onBack(false);
+
+                    alert('Cập nhật thành công!');
+                    onBack(false);
+                } catch (err) {
+                    throw new Error(err.message);
+                }
             } else {
                 newData = {
-                    ...formData, 
+                    ...formData,
                     eventType: formData.eventType,
-                    host: getLecturerIds(formData.host),
-                    participants: getLecturerIds(formData.participants),
                 };
-                
-                //create 
-                attendanceData = {
-                    eventId: newData.eventId,
-                    lecturers: idToObReport([...formData.host,...formData.participants])
-                }
-                
-                
-                // create to database
-                
+
                 const handleCreate = async () => {
                     await createEvent(newData);
-                    await createAttendanceReport(attendanceData);
                 };
                 handleCreate();
 
@@ -277,7 +263,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                     eventLocation: '',
                     eventType: '',
                     host: [],
-                    participants: [],     
+                    participants: [],
                 });
 
                 setErrors({});
@@ -300,7 +286,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
     // Create rendom eventId
     const generateNewEventId = () => {
         let newId = '';
-        let arrId = events.map(event => event.eventId);
+        let arrId = events.map((event) => event.eventId);
         do {
             const randomNum = Math.floor(1000 + Math.random() * 9000);
             newId = `EV${randomNum}`;
@@ -309,28 +295,33 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
     };
 
     // vallidte err notifications
-    const checkNotificationsErr =  {
-        whenForcus : (e) => {
-            const {name}= e.target
-            setChecForcus((pre)=>({...pre, [name]:true}));
+    const checkNotificationsErr = {
+        whenForcus: (e) => {
+            const { name } = e.target;
+            setChecForcus((pre) => ({ ...pre, [name]: true }));
         },
-        whenBlur : (e) => {
-            const {name,type, value}= e.target
-            setChecForcus((pre)=>({...pre, [name]:false}));
-            if(Object.keys(errors).length>0){
-                validateForm()
+        whenBlur: (e) => {
+            const { name, type, value } = e.target;
+            setChecForcus((pre) => ({ ...pre, [name]: false }));
+            if (Object.keys(errors).length > 0) {
+                validateForm();
             }
-            if(name === 'timeEnd'){
-                alerConflicTime()
+            if (name === 'timeEnd') {
+                alerConflicTime();
             }
-            
-              //check ko chọn ngày giờ quá khứ
-            if(type === 'time'){  
+
+            //check ko chọn ngày giờ quá khứ
+            if (type === 'time') {
                 if (formData.date === new Date().toISOString().split('T')[0]) {
-                    const currentTime = new Date().toTimeString().split(' ')[0].slice(0, 5); // Lấy thời gian hiện tại trong định dạng 24 giờ, chỉ lấy phần giờ và phút
- 
+                    const currentTime = new Date()
+                        .toTimeString()
+                        .split(' ')[0]
+                        .slice(0, 5); // Lấy thời gian hiện tại trong định dạng 24 giờ, chỉ lấy phần giờ và phút
+
                     if (value < currentTime) {
-                        alert('Thời gian không được nhỏ hơn thời gian hiện tại');
+                        alert(
+                            'Thời gian không được nhỏ hơn thời gian hiện tại',
+                        );
                         setFormData({
                             ...formData,
                             [name]: '',
@@ -339,8 +330,8 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                     }
                 }
             }
-        }
-}
+        },
+    };
 
     return (
         <div className={cx('container')}>
@@ -375,10 +366,14 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                     <select
                         className={cx('select')}
                         name="eventType"
-                        value={formData.eventType?.typeId || formData.eventType  || '' }
+                        value={
+                            formData.eventType?.typeId ||
+                            formData.eventType ||
+                            ''
+                        }
                         onChange={handleChange}
-                        onFocus={(e)=>checkNotificationsErr.whenForcus(e)}
-                        onBlur={(e)=>checkNotificationsErr.whenBlur(e)}
+                        onFocus={(e) => checkNotificationsErr.whenForcus(e)}
+                        onBlur={(e) => checkNotificationsErr.whenBlur(e)}
                     >
                         <option value="">Chọn loại sự kiện</option>
                         {eventTypes.map((type) => (
@@ -401,8 +396,8 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                         value={formData.eventName}
                         ref={inputRef}
                         onChange={handleChange}
-                        onFocus={(e)=>checkNotificationsErr.whenForcus(e)}
-                        onBlur={(e)=>checkNotificationsErr.whenBlur(e)}
+                        onFocus={(e) => checkNotificationsErr.whenForcus(e)}
+                        onBlur={(e) => checkNotificationsErr.whenBlur(e)}
                     />
                     {!checForcus.eventName && errors.eventName && (
                         <span className={cx('error')}>{errors.eventName}</span>
@@ -416,22 +411,25 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                         name="eventDescription"
                         value={formData.eventDescription}
                         onChange={handleChange}
-                        onFocus={(e)=>checkNotificationsErr.whenForcus(e)}
-                        onBlur={(e)=>checkNotificationsErr.whenBlur(e)}
+                        onFocus={(e) => checkNotificationsErr.whenForcus(e)}
+                        onBlur={(e) => checkNotificationsErr.whenBlur(e)}
                     ></textarea>
-                    {!checForcus.eventDescription && errors.eventDescription && (
-                        <span className={cx('error')}>
-                            {errors.eventDescription}
-                        </span>
-                    )}
+                    {!checForcus.eventDescription &&
+                        errors.eventDescription && (
+                            <span className={cx('error')}>
+                                {errors.eventDescription}
+                            </span>
+                        )}
                 </label>
 
                 <fieldset className={cx('fieldset')}>
                     <legend className={cx('legend')}>Người chủ trì:</legend>
-                    <div className={cx('boxSearch')}
-                        name='divHost'
+                    <div
+                        className={cx('boxSearch')}
+                        name="divHost"
                         onFocus={checkNotificationsErr.whenForcus}
-                        onBlur={checkNotificationsErr.whenBlur}>
+                        onBlur={checkNotificationsErr.whenBlur}
+                    >
                         <textarea
                             className={cx('textareaSearch')}
                             value={host}
@@ -441,8 +439,9 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                             className={cx('search')}
                             arrData={users}
                             formData={formData.host}
+                            otherData={formData.participants}
                             name="host"
-                            handleChange={handleChange}            
+                            handleChange={handleChange}
                         />
                     </div>
 
@@ -455,10 +454,12 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                     <legend className={cx('legend')}>
                         Thành viên tham gia:
                     </legend>
-                    <div className={cx('boxSearch')}
-                        name='divParticipants'
+                    <div
+                        className={cx('boxSearch')}
+                        name="divParticipants"
                         onFocus={checkNotificationsErr.whenForcus}
-                        onBlur={checkNotificationsErr.whenBlur}>
+                        onBlur={checkNotificationsErr.whenBlur}
+                    >
                         <textarea
                             className={cx('textareaSearch')}
                             value={members}
@@ -468,6 +469,7 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                             className={cx('search')}
                             arrData={users}
                             formData={formData.participants}
+                            otherData={formData.host}
                             name="participants"
                             handleChange={handleChange}
                         />
@@ -482,26 +484,29 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
 
                 <label className={cx('label')}>
                     Ngày:
-                   <div 
-                   name='divDate'
-                   onFocus={(e)=>checkNotificationsErr.whenForcus(e)}
-                   onBlur={(e)=>checkNotificationsErr.whenBlur(e)}>
-                        <InputDate 
+                    <div
+                        name="divDate"
+                        onFocus={(e) => checkNotificationsErr.whenForcus(e)}
+                        onBlur={(e) => checkNotificationsErr.whenBlur(e)}
+                    >
+                        <InputDate
                             dateValue={formData.date}
                             className={cx('input')}
-                            setFormData={setFormData}
-                            offset={[0,-20]}
+                            setFormDate={setFormData}
+                            offset={[0, -20]}
                             // tileDisabled
                         />
-                   </div>
-                     {!checForcus.divDate && errors.date && (
+                    </div>
+                    {!checForcus.divDate && errors.date && (
                         <span className={cx('error')}>{errors.date}</span>
                     )}
                 </label>
 
                 {availableTimes.length > 0 && (
-                    <label >
-                        <p style={{color:'red'}}>Các khung giờ đã có lịch:</p>{' '}
+                    <label>
+                        <p style={{ color: 'red' }}>
+                            Các khung giờ đã có lịch:
+                        </p>{' '}
                         <ul className={cx('duplicateTime')}>
                             {availableTimes.map((time, index) => {
                                 return (
@@ -521,8 +526,8 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                         name="timeStart"
                         value={formData.timeStart}
                         onChange={handleChange}
-                        onFocus={(e)=>checkNotificationsErr.whenForcus(e)}
-                        onBlur={(e)=>checkNotificationsErr.whenBlur(e)}
+                        onFocus={(e) => checkNotificationsErr.whenForcus(e)}
+                        onBlur={(e) => checkNotificationsErr.whenBlur(e)}
                     />
                     {!checForcus.timeStart && errors.timeStart && (
                         <span className={cx('error')}>{errors.timeStart}</span>
@@ -536,8 +541,10 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                         name="timeEnd"
                         value={formData.timeEnd}
                         onChange={handleChange}
-                        onBlur={(e)=>{ checkNotificationsErr.whenBlur(e)}}
-                        onFocus={(e)=>checkNotificationsErr.whenForcus(e)}
+                        onBlur={(e) => {
+                            checkNotificationsErr.whenBlur(e);
+                        }}
+                        onFocus={(e) => checkNotificationsErr.whenForcus(e)}
                     />
                     {!checForcus.timeEnd && errors.timeEnd && (
                         <span className={cx('error')}>{errors.timeEnd}</span>
@@ -549,20 +556,31 @@ const EventForm = ({ children = false, onBack = false, title = false }) => {
                     <select
                         className={cx('select')}
                         name="eventLocation"
-                        value={formData.eventLocation?.locationId || formData.eventLocation || ''}
+                        value={
+                            formData.eventLocation?.locationId ||
+                            formData.eventLocation ||
+                            ''
+                        }
                         onChange={handleChange}
-                        onBlur={(e)=>{ checkNotificationsErr.whenBlur(e)}}
-                        onFocus={(e)=>checkNotificationsErr.whenForcus(e)}
+                        onBlur={(e) => {
+                            checkNotificationsErr.whenBlur(e);
+                        }}
+                        onFocus={(e) => checkNotificationsErr.whenForcus(e)}
                     >
                         <option value="">Chọn địa điểm</option>
                         {eventLocations.map((location) => (
-                            <option key={location.locationId} value={location.locationId}>
+                            <option
+                                key={location.locationId}
+                                value={location.locationId}
+                            >
                                 {location.locationName}
                             </option>
                         ))}
                     </select>
                     {!checForcus.eventLocation && errors.eventLocation && (
-                        <span className={cx('error')}>{errors.eventLocation}</span>
+                        <span className={cx('error')}>
+                            {errors.eventLocation}
+                        </span>
                     )}
                 </label>
 

@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import styles from './listLectures.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { getLecturers, deleteLecturer } from '../../../../services/lectureService';
+import { getLecturers, deleteLecturer } from '../../../../services/Admin/lectureService';
 import Button from '../../../Button/Button';
 import LecturerForm from '../lecturerForm';
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';

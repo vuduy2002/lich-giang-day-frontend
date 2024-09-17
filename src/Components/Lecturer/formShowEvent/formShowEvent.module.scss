@@ -23,26 +23,26 @@
     .head-title {
         margin-bottom: 1rem;
     }
-    .row-title{
+    .row-title {
         display: flex;
     }
-    
+
     .title {
         display: inline-block;
-        width: 18rem;
         font-weight: 500;
         line-height: 3rem;
         flex: 1;
     }
-    .text{
+    .text {
         flex: 5;
     }
 
     .participant-table {
         width: 100%;
         border-collapse: collapse;
-
-        th, td {
+        margin-top: 1rem;
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 8px;
         }
@@ -82,5 +82,8 @@
 
     button {
         margin-top: 10px;
+    }
+    .formCheckIn {
+        background-color: aqua;
     }
 }

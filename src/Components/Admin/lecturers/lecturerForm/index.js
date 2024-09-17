@@ -4,7 +4,7 @@ import styles from './lecturer.module.scss';
 import {
     createLecturer,
     updateLecturer,
-} from '../../../../services/lectureService';
+} from '../../../../services/Admin/lectureService';
 import Button from '../../../Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';

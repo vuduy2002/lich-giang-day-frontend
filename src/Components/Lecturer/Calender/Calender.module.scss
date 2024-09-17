@@ -4,66 +4,128 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
-  }
-  
-  .calendar {
+}
+
+.calendar {
     width: 100%;
     max-width: 100%;
     border: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     font-family: Arial, sans-serif;
-  
+
     .react-calendar__navigation {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      background-color: #f8f8f8;
-      border-bottom: 1px solid #ddd;
-  
-      button {
-        color: #4a90e2;
-        font-size: 16px;
-      }
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #ddd;
+
+        button {
+            color: #4a90e2;
+            font-size: 16px;
+        }
     }
-  
+
     .react-calendar__month-view__weekdays {
-      display: flex;
-      justify-content: space-around;
-      padding: 10px;
-      background-color: #f0f0f0;
-      font-weight: bold;
-      color: #4a90e2;
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+        background-color: #f0f0f0;
+        font-weight: bold;
+        color: #4a90e2;
     }
-  
+
     .react-calendar__tile {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 40px;
-      margin: 2px;
-      border-radius: 50%;
-      transition: background 0.3s, color 0.3s;
-  
-      &:hover {
-        background: #d3e3fc;
-      }
-  
-      &--active {
-        background: #4a90e2;
-        color: white;
-      }
-  
-      &--now {
-        background: #ffe082;
-        color: white;
-      }
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        margin: 2px;
+        border-radius: 50%;
+        transition: background 0.3s, color 0.3s;
+
+        &:hover {
+            background: #d3e3fc;
+        }
+
+        &--active {
+            background: #4a90e2;
+            color: white;
+        }
+
+        &--now {
+            background: #ffe082;
+            color: white;
+        }
     }
-  }
-  
-  .events-wrapper {
+}
+
+.top-bobber {
+    display: flex;
+    justify-content: space-between;
+}
+.switch-events {
+    flex: 3;
+    p {
+        display: inline-block;
+        padding: 0.5rem;
+        width: 10rem;
+        margin-left: 1rem;
+        // background-color: green;
+        border-radius: 1rem;
+        border: 1px solid gray;
+        &:hover {
+            background-color: #d9e2ef;
+        }
+    }
+    .active {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: transparent;
+        &:hover {
+            background-color: var(--primary-background-hover);
+        }
+    }
+}
+
+.box-add-events {
+    flex: 1;
+    position: relative;
+    height: 5rem;
+
+    .desciption {
+        position: absolute;
+        top: 5rem;
+        right: 1rem;
+        display: none;
+        width: 19rem;
+        padding: 1rem;
+        color: white;
+        background-color: rgb(110, 199, 240);
+        border-radius: 1rem;
+        font-weight: 600;
+    }
+
+    .add-events {
+        color: #5d5d5d;
+        font-size: 3.4rem;
+        position: absolute;
+        right: 2rem;
+        top: 1rem;
+
+        &:hover {
+            color: #4a90e2;
+
+            & + .desciption {
+                display: block;
+            }
+        }
+    }
+}
+
+.events-wrapper {
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -73,28 +135,44 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
     width: 100%;
-    max-width: 800px;
-  
+
     .event-detail {
-      padding: 10px;
-      margin: 5px 0;
-      border-bottom: 1px solid #ddd;
-      cursor: pointer;
-  
-      &:hover {
-        background-color: #f8f8f8;
-      }
-  
-      h3 {
-        margin: 0;
-        font-size: 18px;
-        color: #333;
-      }
-  
-      p {
-        margin: 5px 0 0;
-        color: #666;
-      }
+        position: relative;
+        padding: 10px;
+        margin: 5px 0;
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #f8f8f8;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .option {
+            position: absolute;
+            right: 1rem;
+            display: none;
+            top: 1rem;
+            color: #333;
+            cursor: pointer;
+            p {
+                display: inline-block;
+                padding: 1rem;
+                border-radius: 5px;
+                background-color: #dcdada;
+                margin-left: 0.5rem;
+            }
+            p:hover {
+                background-color: #c9c9c9;
+            }
+        }
+        .active {
+            display: block;
+        }
     }
-  }
-  
+}
