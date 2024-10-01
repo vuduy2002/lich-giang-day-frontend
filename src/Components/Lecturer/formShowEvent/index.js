@@ -6,6 +6,7 @@ import { convertFromYYYYMMDD } from '../../formatDate';
 import { updateEvent } from '../../../services/Admin/eventService';
 import routes from '../../../routes/confix/Routes';
 import { Link } from 'react-router-dom';
+import InputCheckBox_Radio from '../../checkBox';
 
 const cx = classNames.bind(style);
 
@@ -34,8 +35,6 @@ const FormShowEvent = ({
             reason: value === 'Không' ? prev.reason : '', // Xóa lý do khi tham gia
         }));
     };
-
-    console.log(event);
 
     // Xử lý thay đổi lý do vắng mặt
     const handleReasonChange = (e) => {
@@ -73,6 +72,7 @@ const FormShowEvent = ({
     const eventDateTime = new Date(`${event.date}T${event.timeStart}`);
     const isEventInPast = eventDateTime < new Date();
 
+    console.log(event.host);
     return (
         <div className={cx('form-show-event')}>
             <div className={cx('content')}>
@@ -196,43 +196,48 @@ const AttendingForm = ({
 }) => (
     <form onSubmit={handleSubmit}>
         <div className={cx('form-group')}>
-            <label className={cx('title')}>Bạn sẽ tham gia chứ?</label>
-            <input
-                name="confirm"
-                type="radio"
-                value="Có"
-                checked={currUser.confirm === 'Có'}
-                onChange={handleAttendingChange}
-                disabled={isEventInPast}
-            />{' '}
-            Yes
-            <input
-                name="confirm"
-                type="radio"
-                value="Không"
-                checked={currUser.confirm === 'Không'}
-                onChange={handleAttendingChange}
-                disabled={isEventInPast}
-            />{' '}
-            No
+            <p className={cx('title')}>Bạn sẽ tham gia chứ?</p>
+            <div style={{ display: 'flex' }}>
+                <InputCheckBox_Radio
+                    name="confirm"
+                    type="radio"
+                    value="Có"
+                    checked={currUser.confirm === 'Có'}
+                    handleChange={handleAttendingChange}
+                    // disable={isEventInPast}
+                    className={cx('')}
+                />{' '}
+                Có
+                <InputCheckBox_Radio
+                    name="confirm"
+                    type="radio"
+                    value="Không"
+                    className={cx('')}
+                    checked={currUser.confirm === 'Không'}
+                    handleChange={handleAttendingChange}
+                    // disable={isEventInPast}
+                />{' '}
+                Không
+            </div>
         </div>
         {currUser.confirm === 'Không' && (
             <div className={cx('form-group')}>
                 <label>Lý do vắng mặt:</label>
                 <textarea
+                    // className={cx('text-2xl')}
                     name="reason"
                     value={currUser.reason}
                     onChange={handleReasonChange}
                     required
-                    disabled={isEventInPast}
+                    // disabled={isEventInPast}
                 ></textarea>
             </div>
         )}
-        {!isEventInPast && (
-            <Button size="S" primary type="submit">
-                Submit
-            </Button>
-        )}
+        {/* {!isEventInPast && (
+        )} */}
+        <Button size="S" primary type="submit">
+            Submit
+        </Button>
     </form>
 );
 

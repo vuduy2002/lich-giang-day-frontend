@@ -11,6 +11,7 @@ import Menu from '../../../Components/Menu';
 import { SIDE_MENU_ITEMS_ADMIN } from '../../../listMenuOfPages/admin';
 import { SIDE_MENU_ITEMS_LECTURER } from '../../../listMenuOfPages/lecturer';
 import { Link } from 'react-router-dom';
+import Menu2Levels from '../../../Components/menu2Levels';
 
 const cx = classNames.bind(Style);
 
@@ -44,19 +45,17 @@ function Header() {
 
     return (
         <div className={cx('wraper')}>
-            {show ? (
-                <div>
-                    <Menu items={MenuItems}>
-                        <FontAwesomeIcon icon={faBars}></FontAwesomeIcon>
-                    </Menu>
-                </div>
+            {' '}
+            <Menu2Levels listMenu={MenuItems} />
+            {/* {show ? (
+                <Menu2Levels listMenu={MenuItems} />
             ) : (
                 <Link to={'/homeAdmin'}>
                     <div className={cx('logo-school')}>
                         <img src={logo} alt="logo-school" />
                     </div>
                 </Link>
-            )}
+            )} */}
             <AccountHeader />
         </div>
     );

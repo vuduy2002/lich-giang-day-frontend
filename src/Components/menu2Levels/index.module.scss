@@ -1,0 +1,30 @@
+// .box {
+//     transition: all 0.5s ease;
+// }
+.Link {
+    display: block;
+    padding: 1rem;
+    background-color: bisque;
+    width: 15rem;
+    &:hover {
+        background-color: rgb(170, 228, 228);
+        transform: translateX(0);
+    }
+}
+.bttMenu .Menu_icon {
+    font-size: 2rem;
+    padding: 1rem;
+    &:hover {
+        color: var(--primary-color);
+    }
+}
+.box {
+    position: fixed;
+    top: 5rem;
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease-in-out;
+}
+._box {
+    transform: translateX(0);
+}

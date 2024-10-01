@@ -1,16 +1,16 @@
 import classNames from 'classnames/bind';
 import style from './eventForm.module.scss';
+import { useLocation } from 'react-router-dom';
 import Button from '../../Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
-import InputDate from '../../Admin/inputDate';
 import { useEffect, useState } from 'react';
 import {
     createEvent,
     getEventsOfUSer,
     updateEvent,
 } from '../../../services/Lecturer/privateEventService';
-import { useLocation } from 'react-router-dom';
+
 const cx = classNames.bind(style);
 
 function PrivateEvents() {
@@ -69,6 +69,7 @@ function PrivateEvents() {
         if (type && name) {
             const parentNode = e.target.parentNode;
             const spanNode = parentNode.querySelector('span');
+            console.log(parentNode);
             // message error
             !value
                 ? (spanNode.style.display = 'block')
@@ -145,6 +146,11 @@ function PrivateEvents() {
                 <label className={cx('label')}>
                     Thởi gian bắt đầu:
                     <input
+                        style={{
+                            display: 'inline-block',
+                            width: '13rem',
+                            marginLeft: '5rem',
+                        }}
                         className={cx('input')}
                         type="time"
                         name="time"

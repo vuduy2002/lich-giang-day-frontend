@@ -33,9 +33,19 @@ const publicPages = [
         component: HomeAdminPage,
         layout: null,
     },
-    { path: routes.createEvents, roles: 'admin', component: CreateEvents },
+    {
+        path: routes.createEvents,
+        roles: 'admin',
+        component: CreateEvents,
+        layout: HeaderOnly,
+    },
     { path: routes.createSchedules, roles: 'admin', component: CreateSchedule },
-    { path: routes.listEvents, roles: 'admin', component: ListEvents },
+    {
+        path: routes.listEvents,
+        roles: 'admin',
+        component: ListEvents,
+        layout: HeaderOnly,
+    },
     {
         path: routes.managermentLecturers,
         roles: 'admin',

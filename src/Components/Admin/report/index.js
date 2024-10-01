@@ -15,8 +15,8 @@ import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { convertFromYYYYMMDD } from '../../formatDate';
-import InputCheckBox from '../../checkBox';
 import Button from '../../Button';
+import InputCheckBox_Radio from '../../checkBox';
 
 const ShowReport = () => {
     const [people, setPeople] = useState([]);
@@ -216,7 +216,8 @@ const ShowReport = () => {
                                             <TableCell
                                                 sx={{ fontSize: '1.4rem' }}
                                             >
-                                                <InputCheckBox
+                                                <InputCheckBox_Radio
+                                                    type="checkbox"
                                                     checked={
                                                         participant.checked
                                                     }

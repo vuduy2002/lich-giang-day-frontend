@@ -20,7 +20,7 @@ export const HOME_SYSTEM_MENU_ITEMS_ADMIN = [
     {
         icon: <FontAwesomeIcon icon={faLocationDot}></FontAwesomeIcon>,
         title: 'QL Địa điểm',
-        to: routes.managementLocations
+        to: routes.managementLocations,
     },
     {
         icon: <FontAwesomeIcon icon={faKeyboard}></FontAwesomeIcon>,
@@ -30,7 +30,7 @@ export const HOME_SYSTEM_MENU_ITEMS_ADMIN = [
     {
         icon: <FontAwesomeIcon icon={faSchool}></FontAwesomeIcon>,
         title: 'QL Lớp học',
-       // to: routes.managermentLecturers,
+        // to: routes.managermentLecturers,
     },
 ];
 
@@ -39,6 +39,18 @@ export const SIDE_MENU_ITEMS_ADMIN = [
         icon: <FontAwesomeIcon icon={faHome}></FontAwesomeIcon>,
         title: 'Trang chủ',
         to: routes.homeAdmin,
+        subMenu: [
+            {
+                icon: <FontAwesomeIcon icon={faCalendarDay}></FontAwesomeIcon>,
+                title: 'su1',
+                to: routes.listEvents,
+            },
+            {
+                icon: <FontAwesomeIcon icon={faCalendarPlus}></FontAwesomeIcon>,
+                title: 'sub2',
+                to: routes.createEvents,
+            },
+        ],
     },
     {
         icon: <FontAwesomeIcon icon={faCalendarDay}></FontAwesomeIcon>,

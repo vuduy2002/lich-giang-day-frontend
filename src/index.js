@@ -4,13 +4,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyle from './Components/GlobalStyle';
 import GritSystem from './GritSystem';
-
+import { Provider } from 'react-redux';
+import store from './redux/store';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     // <React.StrictMode>
     <GlobalStyle>
         <GritSystem>
-            <App />
+            <Provider store={store}>
+                {' '}
+                <App />
+            </Provider>
         </GritSystem>
     </GlobalStyle>,
     // </React.StrictMode>,

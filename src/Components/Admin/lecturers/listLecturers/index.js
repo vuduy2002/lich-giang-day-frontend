@@ -2,39 +2,61 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './listLectures.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { getLecturers, deleteLecturer } from '../../../../services/Admin/lectureService';
+import {
+    faChevronLeft,
+    faPen,
+    faTrash,
+} from '@fortawesome/free-solid-svg-icons';
+import {
+    getLecturers,
+    deleteLecturer,
+} from '../../../../services/Admin/lectureService';
 import Button from '../../../Button/Button';
 import LecturerForm from '../lecturerForm';
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    setError,
+    setInputValue,
+    setLecturers,
+    setLoading,
+    setSearchValue,
+    setShowForm,
+    setUpdateLecturer,
+} from '../../../../redux/slices/lecturerSlice';
+
 const cx = classNames.bind(styles);
 const ListLecturersAdmin = () => {
-    const [lecturers, setLecturers] = useState([]);
-    const [showForm, setShowForm] = useState(false);
-    const [updateLecturer, setUpdateLecturer] = useState(null);
-    const [searchValue, setSearchValue] = useState([]);
-    const [inputValue, setInputValue] = useState('');
+    const dispatch = useDispatch();
+
+    const { lecturers, showForm, updateLecturer, searchValue, inputValue } =
+        useSelector((state) => state.lecturers);
 
     useEffect(() => {
         const fetchLecturers = async () => {
             const response = await getLecturers();
-            setLecturers(response.data);
+            dispatch(setLecturers(response.data));
         };
         fetchLecturers();
     }, [showForm]);
 
     useEffect(() => {
-        const lecturerList = lecturers.filter((lecturer) =>
-            lecturer.lecturerName?.toLowerCase().includes(inputValue.toLowerCase()) ||
-            lecturer.lecturerId?.toLowerCase().includes(inputValue.toLowerCase()),
+        const lecturerList = lecturers.filter(
+            (lecturer) =>
+                lecturer.lecturerName
+                    ?.toLowerCase()
+                    .includes(inputValue.toLowerCase()) ||
+                lecturer.lecturerId
+                    ?.toLowerCase()
+                    .includes(inputValue.toLowerCase()),
         );
-        setSearchValue(lecturerList);
+        dispatch(setSearchValue(lecturerList));
     }, [inputValue, lecturers]);
 
     const handleEdit = (lecturer) => {
-        setShowForm(true);
-        setUpdateLecturer(lecturer);
+        dispatch(setShowForm(true));
+        dispatch(setUpdateLecturer(lecturer));
     };
 
     const handleDelete = async (lecturer) => {
@@ -45,7 +67,7 @@ const ListLecturersAdmin = () => {
         ) {
             await deleteLecturer(lecturer.lecturerId);
             const response = await getLecturers();
-            setLecturers(response.data);
+            dispatch(setLecturers(response.data));
         }
     };
 
@@ -64,7 +86,7 @@ const ListLecturersAdmin = () => {
                 size="S"
                 leftIcon={<FontAwesomeIcon icon={faChevronLeft} />}
                 onClick={() => {
-                   window.history.back();
+                    window.history.back();
                 }}
             >
                 Quay lại
@@ -75,7 +97,7 @@ const ListLecturersAdmin = () => {
                     primary
                     rightIcon={<FontAwesomeIcon icon={faPlusSquare} />}
                     size="S"
-                    onClick={() => setShowForm(true)}
+                    onClick={() => dispatch(setShowForm(true))}
                 >
                     Thêm Giảng viên
                 </Button>
@@ -84,7 +106,7 @@ const ListLecturersAdmin = () => {
                     value={inputValue}
                     placeholder="Search..."
                     className={cx('inputSearch')}
-                    onChange={(e) => setInputValue(e.target.value)}
+                    onChange={(e) => dispatch(setInputValue(e.target.value))}
                 />
             </div>
             <div className={cx('boxTable')}>
@@ -103,40 +125,53 @@ const ListLecturersAdmin = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {searchValue.length>0 ?(  
+                        {searchValue.length > 0 ? (
                             searchValue.map((lecturer) => (
-                            <tr key={lecturer.lecturerId}>
-                                <td>{lecturer.lecturerId}</td>
-                                <td>{lecturer.isAdmin ? 'Yes' : 'No'}</td>
-                                <td>{lecturer.position}</td>
-                                <td>
-                                    <img
-                                        className={cx('avatar')}
-                                        src={lecturer.avatar}
-                                        alt="Avatar"
-                                        width="50"
-                                        height="50"
-                                    />
-                                </td>
-                                <td>{lecturer.lecturerName}</td>
-                                <td>{lecturer.lecturerPhone}</td>
-                                <td>{lecturer.password}</td>
-                                <td>{lecturer.email}</td>
-                                <td className={cx('actions')}>
-                                    <FontAwesomeIcon
-                                        icon={faPen}
-                                        onClick={() => handleEdit(lecturer)}
-                                        className={cx('icon', 'edit-icon')}
-                                    />
-                                    <FontAwesomeIcon
-                                        icon={faTrash}
-                                        onClick={() => handleDelete(lecturer)}
-                                        className={cx('icon', 'delete-icon')}
-                                    />
+                                <tr key={lecturer.lecturerId}>
+                                    <td>{lecturer.lecturerId}</td>
+                                    <td>{lecturer.isAdmin ? 'Yes' : 'No'}</td>
+                                    <td>{lecturer.position}</td>
+                                    <td>
+                                        <img
+                                            className={cx('avatar')}
+                                            src={lecturer.avatar}
+                                            alt="Avatar"
+                                            width="50"
+                                            height="50"
+                                        />
+                                    </td>
+                                    <td>{lecturer.lecturerName}</td>
+                                    <td>{lecturer.lecturerPhone}</td>
+                                    <td>{lecturer.password}</td>
+                                    <td>{lecturer.email}</td>
+                                    <td className={cx('actions')}>
+                                        <FontAwesomeIcon
+                                            icon={faPen}
+                                            onClick={() => handleEdit(lecturer)}
+                                            className={cx('icon', 'edit-icon')}
+                                        />
+                                        <FontAwesomeIcon
+                                            icon={faTrash}
+                                            onClick={() =>
+                                                handleDelete(lecturer)
+                                            }
+                                            className={cx(
+                                                'icon',
+                                                'delete-icon',
+                                            )}
+                                        />
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td
+                                    colSpan={11}
+                                    style={{ textAlign: 'center' }}
+                                >
+                                    Không có kết quả phù hợp...
                                 </td>
                             </tr>
-                        ))):(
-                            <tr><td colSpan={11} style={{textAlign: 'center'}}>Không có kết quả phù hợp...</td></tr>
                         )}
                     </tbody>
                 </table>

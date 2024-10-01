@@ -3,8 +3,9 @@ import style from './checkBox.module.scss';
 
 const cx = classNames.bind(style);
 
-function InputCheckBox({
+function InputCheckBox_Radio({
     disable = false,
+    type = '',
     name,
     value = ' ',
     checked,
@@ -13,7 +14,7 @@ function InputCheckBox({
     return (
         <label>
             <input
-                type="checkbox"
+                type={type}
                 name={name}
                 value={value}
                 checked={checked}
@@ -28,4 +29,4 @@ function InputCheckBox({
     );
 }
 
-export default InputCheckBox;
+export default InputCheckBox_Radio;

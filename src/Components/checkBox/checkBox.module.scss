@@ -1,12 +1,15 @@
 input[type='checkbox'] {
     display: none;
 }
+input[type='radio'] {
+    display: none;
+}
 
 /* Tạo một hộp tùy chỉnh làm nền cho checkbox */
 .custom-checkbox {
     width: 3rem;
     height: 3rem;
-    margin-right: 1rem;
+    margin: 0 1rem;
     border-radius: 1000px;
     background-color: #f0f0f0; /* Màu nền mặc định */
     border: 2px solid #ccc;
@@ -17,6 +20,10 @@ input[type='checkbox'] {
 
 /* Thay đổi màu nền khi checkbox được chọn */
 input[type='checkbox']:checked + .custom-checkbox {
+    background-color: #5fb3e1; /* Màu nền khi được chọn */
+    border-color: #4caf50;
+}
+input[type='radio']:checked + .custom-checkbox {
     background-color: #5fb3e1; /* Màu nền khi được chọn */
     border-color: #4caf50;
 }
@@ -37,6 +44,9 @@ input[type='checkbox']:checked + .custom-checkbox {
 
 /* Hiển thị dấu tích khi checkbox được chọn */
 input[type='checkbox']:checked + .custom-checkbox::after {
+    opacity: 1;
+}
+input[type='radio']:checked + .custom-checkbox::after {
     opacity: 1;
 }
 
