@@ -5,16 +5,18 @@ import routes from '../../routes/confix/Routes';
 import style from './Login.module.scss';
 import Button from '../../Components/Button';
 import { Link } from 'react-router-dom';
-
+import { ClipLoader } from 'react-spinners';
 const cx = classNames.bind(style);
 
 const Login = () => {
     const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const user = await login(userId, password);
             if (user.role === 'admin') {
@@ -35,44 +37,60 @@ const Login = () => {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('login-container')}>
-                <h1 className={cx('login-title')}>Đăng nhập</h1>
-                <form onSubmit={handleSubmit}>
-                    <div className={cx('input-group')}>
-                        <label className={cx('input-group-label')} htmlFor="username">
-                            ID đăng nhập
-                        </label>
-                        <input
-                            className={cx('input-group-input')}
-                            type="text"
-                            id="username"
-                            name="username"
-                            value={userId}
-                            onChange={(e) => setUserId(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className={cx('input-group')}>
-                        <label className={cx('input-group-label')} htmlFor="password">
-                            Mật khẩu
-                        </label>
-                        <input
-                            className={cx('input-group-input')}
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <Button primary> Đăng nhập</Button>
-                </form>
-                {errorMessage && (
-                    <div className={cx('error-message')}>{errorMessage}</div>
-                )}
-                <Link to={routes.resetpass}><p className={cx('resetPass')}>Quên mật khẩu - Đổi mật khẩu?</p></Link>
-            </div>
+            {loading ? (
+                <ClipLoader size={50} color={'#123abc'} loading={loading} />
+            ) : (
+                <div className={cx('login-container')}>
+                    <h1 className={cx('login-title')}>Đăng nhập</h1>
+                    <form onSubmit={handleSubmit}>
+                        <div className={cx('input-group')}>
+                            <label
+                                className={cx('input-group-label')}
+                                htmlFor="username"
+                            >
+                                ID đăng nhập
+                            </label>
+                            <input
+                                className={cx('input-group-input')}
+                                type="text"
+                                id="username"
+                                name="username"
+                                value={userId}
+                                onChange={(e) => setUserId(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className={cx('input-group')}>
+                            <label
+                                className={cx('input-group-label')}
+                                htmlFor="password"
+                            >
+                                Mật khẩu
+                            </label>
+                            <input
+                                className={cx('input-group-input')}
+                                type="password"
+                                id="password"
+                                name="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <Button primary> Đăng nhập</Button>
+                    </form>
+                    {errorMessage && (
+                        <div className={cx('error-message')}>
+                            {errorMessage}
+                        </div>
+                    )}
+                    <Link to={routes.resetpass}>
+                        <p className={cx('resetPass')}>
+                            Quên mật khẩu - Đổi mật khẩu?
+                        </p>
+                    </Link>
+                </div>
+            )}
         </div>
     );
 };

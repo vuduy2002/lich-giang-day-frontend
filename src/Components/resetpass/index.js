@@ -3,7 +3,11 @@ import classNames from 'classnames/bind';
 import styles from './resetPass.module.scss';
 import Button from '../Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {postEmail, postCodeVerify, postUpdatePass} from '../../services/resetPass'
+import {
+    postEmail,
+    postCodeVerify,
+    postUpdatePass,
+} from '../../services/resetPass';
 import { ClipLoader } from 'react-spinners'; // Import spinner
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
@@ -62,7 +66,7 @@ const PasswordReset = () => {
         }
         setError('');
         try {
-            await postCodeVerify(email,  verificationCode );
+            await postCodeVerify(email, verificationCode);
             setStep(3);
         } catch (error) {
             console.error(error);
@@ -87,15 +91,22 @@ const PasswordReset = () => {
     };
 
     return (
-       <div className={cx('wrapper')}>
+        <div className={cx('wrapper')}>
             <div className={cx('passwordResetContainer')}>
                 {loading ? (
                     <div className={cx('spinnerContainer')}>
-                        <ClipLoader size={50} color={"#123abc"} loading={loading} />
+                        <ClipLoader
+                            size={50}
+                            color={'#123abc'}
+                            loading={loading}
+                        />
                     </div>
                 ) : (
-                    <div> 
-                        <FontAwesomeIcon icon={faChevronLeft} onClick={()=>window.history.back()}/>
+                    <div>
+                        <FontAwesomeIcon
+                            icon={faChevronLeft}
+                            onClick={() => window.history.back()}
+                        />
                         {step === 1 && (
                             <div className={cx('form-input')}>
                                 <h2>Nhập email của bạn</h2>
@@ -117,14 +128,18 @@ const PasswordReset = () => {
                                 <input
                                     type="text"
                                     value={verificationCode}
-                                    onChange={(e) => setVerificationCode(e.target.value)}
+                                    onChange={(e) =>
+                                        setVerificationCode(e.target.value)
+                                    }
                                     className={cx('inputField')}
                                     required
                                 />
                                 <Button primary onClick={handleCodeSubmit}>
                                     Xác nhận mã xác thực
                                 </Button>
-                                <p className={cx('show-time')}>Mã sẽ hết hạn sau: {timer} giây</p>
+                                <p className={cx('show-time')}>
+                                    Mã sẽ hết hạn sau: {timer} giây
+                                </p>
                             </div>
                         )}
                         {step === 3 && (
@@ -133,7 +148,9 @@ const PasswordReset = () => {
                                 <input
                                     type="password"
                                     value={newPassword}
-                                    onChange={(e) => setNewPassword(e.target.value)}
+                                    onChange={(e) =>
+                                        setNewPassword(e.target.value)
+                                    }
                                     className={cx('inputField')}
                                     required
                                 />
@@ -146,7 +163,7 @@ const PasswordReset = () => {
                 )}
                 {error && <div className={cx('error')}>{error}</div>}
             </div>
-       </div>
+        </div>
     );
 };
 

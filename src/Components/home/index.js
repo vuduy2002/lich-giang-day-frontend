@@ -14,7 +14,7 @@ function Home() {
             </div>
             <div className={cx('container')}>
                 <h1 className={cx('title')}>
-                Phần mềm Quản lý Lịch Công tác Giảng Viên
+                    Phần mềm Quản lý Lịch Công tác Giảng Viên
                 </h1>
 
                 <Button primary to="/login" className={cx('btt')}>
