@@ -38,7 +38,10 @@ const Login = () => {
     return (
         <div className={cx('wrapper')}>
             {loading ? (
-                <ClipLoader size={50} color={'#123abc'} loading={loading} />
+                <div>
+                    <ClipLoader size={50} color={'#123abc'} loading={loading} />
+                    <p style={{ marginLeft: '-10px' }}>Loading...</p>
+                </div>
             ) : (
                 <div className={cx('login-container')}>
                     <h1 className={cx('login-title')}>Đăng nhập</h1>
