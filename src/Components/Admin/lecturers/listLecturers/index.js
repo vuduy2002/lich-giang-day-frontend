@@ -72,13 +72,7 @@ const ListLecturersAdmin = () => {
     };
 
     return showForm ? (
-        <LecturerForm
-            listLecturers={lecturers}
-            onBack={setShowForm}
-            setChildren={setUpdateLecturer}
-        >
-            {updateLecturer}
-        </LecturerForm>
+        <LecturerForm listLecturers={lecturers}>{updateLecturer}</LecturerForm>
     ) : (
         <div className={cx('container')}>
             <Button

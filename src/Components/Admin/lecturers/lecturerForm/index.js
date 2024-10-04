@@ -8,15 +8,17 @@ import {
 import Button from '../../../Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import InputCheckBox_Radio from '../../../checkBox';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    setShowForm,
+    setUpdateLecturer,
+} from '../../../../redux/slices/lecturerSlice';
 
 const cx = classNames.bind(styles);
 
-const LecturerForm = ({
-    children = null,
-    listLecturers = [],
-    onBack = () => {},
-    setChildren = () => {},
-}) => {
+const LecturerForm = ({ children = null, listLecturers = [] }) => {
+    const dispatch = useDispatch();
     const [formData, setFormData] = useState({
         lecturerId: '',
         isAdmin: false,
@@ -37,7 +39,9 @@ const LecturerForm = ({
 
     const inputRef = useRef();
 
-    let title = children ? 'Cập nhật thông tin giảng viên' : 'Thêm mới giảng viên';
+    let title = children
+        ? 'Cập nhật thông tin giảng viên'
+        : 'Thêm mới giảng viên';
 
     // Default prefix when component mounts
     const defaultPrefix = 'TC';
@@ -90,8 +94,10 @@ const LecturerForm = ({
     const validateForm = () => {
         const errors = {};
         if (!formData.position) errors.position = 'Vui lòng nhập chức vụ.';
-        if (!formData.lecturerName) errors.lecturerName = 'Vui lòng nhập tên giảng viên.';
-        if (!formData.lecturerPhone) errors.lecturerPhone = 'Vui lòng nhập số điện thoại.';
+        if (!formData.lecturerName)
+            errors.lecturerName = 'Vui lòng nhập tên giảng viên.';
+        if (!formData.lecturerPhone)
+            errors.lecturerPhone = 'Vui lòng nhập số điện thoại.';
         if (!formData.password) {
             errors.password = 'Vui lòng nhập mật khẩu.';
         } else if (formData.password.length < 6) {
@@ -118,8 +124,8 @@ const LecturerForm = ({
                 await updateLecturer(children.lecturerId, formData);
                 resetForm();
                 alert('Cập nhật thành công!');
-                setChildren(null);
-                onBack(false);
+                dispatch(setUpdateLecturer(null));
+                dispatch(setShowForm(false));
             };
             handleUpdate();
         } else {
@@ -160,8 +166,8 @@ const LecturerForm = ({
                 leftIcon={<FontAwesomeIcon icon={faChevronLeft} />}
                 onClick={() => {
                     resetForm();
-                    setChildren(null);
-                    onBack(false);
+                    dispatch(setUpdateLecturer(null));
+                    dispatch(setShowForm(false));
                 }}
             >
                 Quay lại
@@ -182,16 +188,21 @@ const LecturerForm = ({
                 <label className={cx('label')}>
                     <span className={cx('title')}>Is Admin:</span>
                     <div className={cx('wrapCheckbox')}>
-                        <input
+                        {/* <input
                             type="checkbox"
                             name="isAdmin"
                             checked={formData.isAdmin}
                             onChange={handleChange}
                             className={cx('checkbox')}
+                        /> */}
+                        <InputCheckBox_Radio
+                            type="checkbox"
+                            name="isAdmin"
+                            checked={formData.isAdmin}
+                            handleChange={handleChange}
+                            className={cx('checkbox')}
                         />
-                        <span>
-                            Lưu ý: Click để tạo ID theo quyền!
-                        </span>
+                        <span>Lưu ý: Click để tạo ID theo quyền!</span>
                     </div>
                 </label>
                 <label className={cx('label')}>
@@ -242,7 +253,9 @@ const LecturerForm = ({
                         className={cx('input')}
                     />
                     {formErrors.lecturerPhone && (
-                        <p className={cx('error')}>{formErrors.lecturerPhone}</p>
+                        <p className={cx('error')}>
+                            {formErrors.lecturerPhone}
+                        </p>
                     )}
                 </label>
                 <label className={cx('label')}>
@@ -272,7 +285,9 @@ const LecturerForm = ({
                     )}
                 </label>
                 {Object.values(formErrors).some((error) => error) && (
-                    <p className={cx('error')}>Vui lòng kiểm tra lại các trường thông tin.</p>
+                    <p className={cx('error')}>
+                        Vui lòng kiểm tra lại các trường thông tin.
+                    </p>
                 )}
                 <Button primary>{title}</Button>
             </form>
