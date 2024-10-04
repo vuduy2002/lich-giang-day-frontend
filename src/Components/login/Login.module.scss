@@ -47,9 +47,10 @@
     margin-top: 10px;
 }
 
-.resetPass{
+.resetPass {
     margin-top: 2rem;
-    &:hover{
+    text-decoration-line: underline;
+    &:hover {
         color: #838282;
     }
 }
